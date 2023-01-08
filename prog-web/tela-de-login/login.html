@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+</head>
+
+<body>
+    <input type="button" id="help" value="?"></input>
+    <form id="form" class="form">
+        <h1>Login</h1>
+        <input id="email" class="inputItem emailInput" type="email" required placeholder="email">
+        <input id="password" class="inputItem passwordInput" type="password" required placeholder="senha">
+        <input id="send" class='inputItem sendBtn' type="button" value="Login">
+        <div hidden class="success" id="success">Login realizado com sucesso!</div>
+        <div hidden class="error" id="error">Login inválido!</div>
+    </form>
+</body>
+<script src="script.js"></script>
+
+</html>

@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form {
+    text-align: center;
+    width: 350px;
+}
+
+.inputItem {
+    width: 100%;
+}
+
+@media (max-width: 350px) {
+    .form {
+        width: 90vw
+    }
+}
+
+.success {
+    background-color: var(--background);
+    padding: 10px;
+    border-radius: 6px;
+    color: #00FF00;
+}
+
+.error {
+    background-color: var(--background);
+    padding: 10px;
+    border-radius: 6px;
+    color: #FF0000
+}
