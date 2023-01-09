@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Cadastro</title>
+</head>
+
+<body onload="loadDate()">
+    <h3 id="date">Hoje: </h3>
+    <div id="form">
+        <h1>Cadastro</h1>
+        <div class="buttons">
+            <button id="nameBtn">Digitar Nome</button>
+            <button id="emailBtn">Digitar E-mail</button>
+            <button id="register">Cadastrar</button>
+            <button id="clean">Limpar</button>
+        </div>
+
+        <textarea id="resultArea" readonly></textarea>
+    </div>
+    <div id="nameForm" hidden>
+        <h1>Seu Nome</h1>
+        <input id="inputName" type="text">
+        <button id="okName">OK</button>
+        <button id="cancelName">Cancelar</button>
+    </div>
+    <div id="emailForm" hidden>
+        <h1>Seu Email</h1>
+        <input id="inputEmail" type="text">
+        <button id="okEmail">OK</button>
+        <button id="cancelEmail">Cancelar</button>
+    </div>
+</body>
+<script src="script.js"></script>
+
+</html>
