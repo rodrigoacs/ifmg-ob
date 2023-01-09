@@ -1,0 +1,20 @@
+* {
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+}
+
+.buttons {
+    display: flex;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    width: 100%;
+}
