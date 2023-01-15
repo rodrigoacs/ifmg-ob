@@ -2,17 +2,18 @@
     box-sizing: border-box;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
 button {
     width: 100%;
 }
 
 .buttons {
     display: flex;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
 }
 
 input {

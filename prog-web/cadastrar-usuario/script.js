@@ -41,11 +41,16 @@ const okEmail = document.getElementById("okEmail")
 const cancelEmail = document.getElementById("cancelEmail")
 let emailContent = ""
 
+var emailFormat = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 okEmail.addEventListener("click", () => {
-    emailContent = inputEmail.value
-    emailForm.hidden = true
-    form.hidden = false
-    inputEmail.value = ""
+    if (inputEmail.value.match(emailFormat)) {
+        emailContent = inputEmail.value
+        emailForm.hidden = true
+        form.hidden = false
+        inputEmail.value = ""
+    } else {
+        alert('email invalido\nformato aceito: xyz@xyz.xyz')
+    }
 })
 
 cancelEmail.addEventListener("click", () => {
@@ -67,6 +72,7 @@ register.addEventListener("click", () => {
 
 clean.addEventListener("click", () => {
     resultArea.value = ""
+    i = 1
 })
 
 function loadDate() {
