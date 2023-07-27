@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+  <title>Login</title>
+</head>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --background-body: #252525;
+    --background: #181818;
+    --button-base: #00C2FF;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+  }
+
+  .form {
+    text-align: center;
+    width: 350px;
+  }
+
+  .inputItem {
+    width: 100%;
+  }
+
+  @media (max-width: 350px) {
+    .form {
+      width: 90vw
+    }
+  }
+</style>
+
+<body>
+  <form id="form" class="form">
+    <h1>Cadastro</h1>
+    <input id="email" class="inputItem emailInput" type="email" required placeholder="usuario">
+    <input id="password" class="inputItem passwordInput" type="password" required placeholder="senha">
+    <input id="password2" class="inputItem passwordInput" type="password" required placeholder="confirme a senha">
+    <p id="passwordError" style="color: red; display: none;">as senhas não coincidem</p>
+    <input id="send" class='inputItem sendBtn' type="button" value="Cadastrar"><br>
+  </form>
+</body>
+
+<script>
+  const email = document.getElementById("email")
+  const password = document.getElementById("password")
+  const password2 = document.getElementById("password2")
+  const send = document.getElementById("send")
+
+
+  send.addEventListener("click", () => {
+    if (password.value !== password2.value) {
+      passwordError.style.display = "block"
+      password.style.borderColor = "red";
+      password.style.borderWidth = "2px";
+      password.style.borderStyle = "solid";
+      password2.style.borderColor = "red";
+      password2.style.borderWidth = "2px";
+      password2.style.borderStyle = "solid";
+    }
+    if (email.value && password.value === password2.value) {
+      window.location = "http://127.0.0.1:5500/ihc/login.html"
+    }
+  })
+</script>
+
+</html>

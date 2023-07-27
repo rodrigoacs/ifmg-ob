@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+  <title>Login</title>
+</head>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --background-body: #252525;
+    --background: #181818;
+    --button-base: #00C2FF;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+  }
+
+  .form {
+    text-align: center;
+    width: 350px;
+  }
+
+  .inputItem {
+    width: 100%;
+  }
+
+  @media (max-width: 350px) {
+    .form {
+      width: 90vw
+    }
+  }
+
+  .success {
+    background-color: var(--background);
+    padding: 10px;
+    border-radius: 6px;
+    color: #00FF00;
+  }
+
+  .error {
+    background-color: var(--background);
+    padding: 10px;
+    border-radius: 6px;
+    color: #FF0000
+  }
+
+  p:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<body>
+  <form id="form" class="form">
+    <h1>Login</h1>
+    <input id="email" class="inputItem emailInput" type="email" required placeholder="usuario">
+    <input id="password" class="inputItem passwordInput" type="password" required placeholder="senha">
+    <p id="recoverPassword">esqueci a senha</p>
+    <input id="send" class='inputItem sendBtn' type="button" value="Login"><br>
+    <div hidden class="success" id="success">Login realizado com sucesso!</div>
+    <div hidden class="error" id="error">Login inválido!</div>
+  </form>
+</body>
+
+<script>
+  const email = document.getElementById("email")
+  const password = document.getElementById("password")
+  const send = document.getElementById("send")
+  const recoverPassword = document.getElementById("recoverPassword")
+
+  function sucessLogin() {
+    document.getElementById("error").hidden = true;
+    document.getElementById("success").hidden = false;
+    window.location = "http://127.0.0.1:5500/ihc/paginaPrincipal.html"
+  }
+
+  function errorLogin() {
+    document.getElementById("success").hidden = true;
+    document.getElementById("error").hidden = false;
+  }
+
+  recoverPassword.addEventListener("click", () => {
+    window.location = "http://127.0.0.1:5500/ihc/recuperarSenha.html"
+  })
+
+  send.addEventListener("click", () => {
+    if (email.value == "email@email" && password.value == "senha123") {
+      sucessLogin()
+    } else {
+      errorLogin()
+    }
+  })
+</script>
+
+</html>
