@@ -7,7 +7,7 @@ public class q2dnv {
 
     int mes;
     int dia;
-    int[] diasFinais = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 25 };
+    int[] diasFinais = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 25 };
     int totalDias = 0;
 
     while (in.hasNextInt()) {
@@ -16,10 +16,10 @@ public class q2dnv {
 
       totalDias = 0;
 
-      for (int i = mes + 1; i <= 12; i++) {
+      for (int i = mes; i < 12; i++) {
         totalDias += diasFinais[i];
       }
-      totalDias += (diasFinais[mes] - dia);
+      totalDias += (diasFinais[mes - 1] - dia);
 
       if (totalDias == 0) {
         System.out.println("E natal!");
