@@ -15,14 +15,11 @@ public class q2 {
       }
       if (x > 0 && y > 0) {
         System.out.println("Primeiro");
-      }
-      if (x < 0 && y > 0) {
+      } else if (x < 0 && y > 0) {
         System.out.println("Segundo");
-      }
-      if (x < 0 && y < 0) {
+      } else if (x < 0 && y < 0) {
         System.out.println("Terceiro");
-      }
-      if (x > 0 && y < 0) {
+      } else if (x > 0 && y < 0) {
         System.out.println("Quarto");
       }
     }
