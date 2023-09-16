@@ -27,7 +27,7 @@ public class PrincipalConta {
           conta.setTitular(cliente);
           conta.setNumero(i);
           lista.add(conta);
-          System.out.println("Conta " + i + " criada com sucesso!\n");
+          System.out.println("Conta numero " + i + " criada com sucesso!\n");
           break;
 
         case 2:
