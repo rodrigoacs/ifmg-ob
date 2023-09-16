@@ -1,2 +1,2 @@
 # ifmg-ob
-Things developed in information systems bachelor at IFMG Ouro Branco
+Things developed during the graduation in information systems at IFMG Ouro Branco
