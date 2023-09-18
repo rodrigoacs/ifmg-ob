@@ -25,7 +25,13 @@ public class singleTest {
     startTime = System.currentTimeMillis();
     sorting.mergeSort(d, 0, d.length - 1);
     endTime = System.currentTimeMillis();
-    System.out.println("(Merge Sort): " + (endTime - startTime) + " milissegundos\n");
+    System.out.println("(Merge Sort): " + (endTime - startTime) + " milissegundos");
+
+    int[] e = sorting.generateRandomArray(size);
+    startTime = System.currentTimeMillis();
+    sorting.quickSort(e, 0, e.length - 1);
+    endTime = System.currentTimeMillis();
+    System.out.println("(Quick Sort): " + (endTime - startTime) + " milissegundos\n");
 
   }
 }
