@@ -109,7 +109,7 @@ public class sorting {
     for (int i = 0; i < size; i++) {
       int value;
       do {
-        value = random.nextInt(100000); // Valor aleatório entre 0 e 99,999
+        value = random.nextInt(size); // Valor aleatório entre 0 e 99,999
       } while (uniqueValues.contains(value));
 
       uniqueValues.add(value);

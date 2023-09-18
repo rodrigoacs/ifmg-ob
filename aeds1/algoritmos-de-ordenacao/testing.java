@@ -7,7 +7,7 @@ public class testing {
     // int[] bubbleSortArray = new int[forSize];
 
     for (int i = 0; i < forSize; i++) {
-      size += 100000;
+      size += 1000000;
       System.out.println("Tamanho do array: " + size);
       int[] a = sorting.generateRandomArray(size);
       long startTime = System.currentTimeMillis();
