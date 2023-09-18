@@ -1,4 +1,4 @@
-public class testing {
+public class singleTest {
   public static void main(String[] args) {
     int size = 0, forSize = 1;
     // int[] selectionSortArray = new int[forSize];
@@ -7,7 +7,7 @@ public class testing {
     // int[] bubbleSortArray = new int[forSize];
 
     for (int i = 0; i < forSize; i++) {
-      size += 1000000;
+      size += 100000;
       System.out.println("Tamanho do array: " + size);
       int[] a = sorting.generateRandomArray(size);
       long startTime = System.currentTimeMillis();
