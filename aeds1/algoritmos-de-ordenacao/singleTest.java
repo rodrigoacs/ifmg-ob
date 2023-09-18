@@ -1,6 +1,6 @@
 public class singleTest {
   public static void main(String[] args) {
-    int size = 10000;
+    int size = 100000;
 
     System.out.println("Tamanho do array: " + size);
     int[] a = sorting.generateRandomArray(size);
