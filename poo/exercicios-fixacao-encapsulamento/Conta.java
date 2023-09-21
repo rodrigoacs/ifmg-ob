@@ -29,11 +29,14 @@ public class Conta {
   }
 
   void deposito(double valorDeposito) {
+    if (valorDeposito <= 0) {
+      return;
+    }
     this.saldo += valorDeposito;
   }
 
   boolean sacar(double valor) {
-    if (this.saldo >= valor && valor > 0) {
+    if (this.saldo >= valor && valor >= 0) {
       this.saldo -= valor;
       return true;
     } else {
