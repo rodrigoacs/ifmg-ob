@@ -33,7 +33,7 @@ public class Conta {
   }
 
   boolean sacar(double valor) {
-    if (this.saldo >= valor) {
+    if (this.saldo >= valor && valor > 0) {
       this.saldo -= valor;
       return true;
     } else {
