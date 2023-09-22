@@ -5,9 +5,6 @@ public class q5 {
   }
 
   public static int power(int e, int n) {
-    if (e == 1) {
-      return n;
-    }
-    return n * power(e - 1, n);
+    return e == 1 ? n : n * power(e - 1, n);
   }
 }
