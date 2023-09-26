@@ -9,24 +9,24 @@ public class q4 {
   public static void main(String[] args) {
     int min = 1;
     int max = 60;
-    ArrayList<Integer> pairs = new ArrayList<>();
+    ArrayList<Integer> evens = new ArrayList<>();
     ArrayList<Integer> odds = new ArrayList<>();
 
-    printOddOrPair(min, max, pairs, odds);
+    printOddOrPair(min, max, evens, odds);
   }
 
-  public static void printOddOrPair(int min, int max, ArrayList<Integer> pairs, ArrayList<Integer> odds) {
+  public static void printOddOrPair(int min, int max, ArrayList<Integer> evens, ArrayList<Integer> odds) {
     if (min <= max) {
       if ((min % 2 == 0) == true) {
-        pairs.add(min);
+        evens.add(min);
       } else {
         odds.add(min);
       }
-      printOddOrPair(min + 1, max, pairs, odds);
+      printOddOrPair(min + 1, max, evens, odds);
     } else {
-      System.out.println("min = " + (min - pairs.size() - odds.size()) + " e max = " + max);
+      System.out.println("min = " + (min - evens.size() - odds.size()) + " e max = " + max);
       System.out.println("Numeros pares: ");
-      for (Integer number : pairs) {
+      for (Integer number : evens) {
         System.out.print(number + " ");
       }
       System.out.println();
