@@ -3,9 +3,15 @@ import java.util.Random;
 
 public class ordenacao {
   public static void main(String[] args) {
-    int size = 100000;
+    // a saída do código segue um modelo de csv
+    // para facilitar a importação no
+    // excel para criação dos gráficos
+    int size = 10000;
+    int growthRate = 10000;
+    int tests = 10;
+
     System.out.println("tamanho;selection;insertion;merge;quick");
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < tests; i++) {
       System.out.print(size + ";");
       int[] arrayBase = generateRandomArray(size);
       long startTime, endTime;
@@ -33,17 +39,21 @@ public class ordenacao {
       quickSort(quickArray, 0, quickArray.length - 1);
       endTime = System.currentTimeMillis();
       System.out.print((endTime - startTime) + ";");
-      size += 100000;
+      size += growthRate;
       System.out.println();
     }
-
   }
 
   public static void quickSort(int[] values, int left, int right) {
-    if (left < right) {
+    while (left < right) {
       int indexPivot = partition(values, left, right);
-      quickSort(values, left, indexPivot - 1);
-      quickSort(values, indexPivot + 1, right);
+      if (indexPivot - left < right - indexPivot) {
+        quickSort(values, left, indexPivot - 1);
+        left = indexPivot + 1;
+      } else {
+        quickSort(values, indexPivot + 1, right);
+        right = indexPivot - 1;
+      }
     }
   }
 
@@ -52,7 +62,7 @@ public class ordenacao {
     int i = left;
     for (int j = left + 1; j <= right; j++) {
       if (values[j] <= pivot) {
-        i += 1;
+        i++;
         swap(values, i, j);
       }
     }
@@ -155,16 +165,5 @@ public class ordenacao {
       array[i] = value;
     }
     return array;
-  }
-
-  public static void printArray(int[] array) {
-    System.out.print("[");
-    for (int i = 0; i < array.length; i++) {
-      System.out.print(array[i]);
-      if (i < array.length - 1) {
-        System.out.print(", ");
-      }
-    }
-    System.out.println("]");
   }
 }
