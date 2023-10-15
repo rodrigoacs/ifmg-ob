@@ -10,17 +10,17 @@ public class ordenacao {
       int[] arrayBase = generateRandomArray(size);
       long startTime, endTime;
 
-      // int[] selectionArray = arrayBase.clone();
-      // startTime = System.currentTimeMillis();
-      // selectionSort(selectionArray);
-      // endTime = System.currentTimeMillis();
-      // System.out.print((endTime - startTime) + ";");
+      int[] selectionArray = arrayBase.clone();
+      startTime = System.currentTimeMillis();
+      selectionSort(selectionArray);
+      endTime = System.currentTimeMillis();
+      System.out.print((endTime - startTime) + ";");
 
-      // int[] insertionArray = arrayBase.clone();
-      // startTime = System.currentTimeMillis();
-      // insertionSort(insertionArray);
-      // endTime = System.currentTimeMillis();
-      // System.out.print((endTime - startTime) + ";");
+      int[] insertionArray = arrayBase.clone();
+      startTime = System.currentTimeMillis();
+      insertionSort(insertionArray);
+      endTime = System.currentTimeMillis();
+      System.out.print((endTime - startTime) + ";");
 
       int[] mergeArray = arrayBase.clone();
       startTime = System.currentTimeMillis();
