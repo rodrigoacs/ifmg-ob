@@ -6,101 +6,58 @@
 // 4. `acelerar()`: Método para acelerar o carro.
 // 5. `frear()`: Método para frear o carro.
 // ### Classe Item:
-// 1. `calcularValorTotal()`: Calcula o valor total com base na quantidade e no preço do item.
+// 1. `calcularValorTotal()`: Calcula o valor total com base na quantidade e no preco do item.
 // 2. `validarItem()`: Verifica se o item é válido de acordo com determinados critérios.
 // 3. `definirCategoria()`: Atribui uma categoria ao item com base em suas características.
 // ### Classe OrdemDeServico:
-// 1. `adicionarItem(Item item)`: Adiciona um item à ordem de serviço.
-// 2. `removerItem(Item item)`: Remove um item da ordem de serviço.
-// 3. `calcularTotal()`: Recalcula o total da ordem de serviço com base nos itens.
-// 4. `adicionarTaxaDeServico(float taxa)`: Adiciona uma taxa de serviço à ordem de serviço.
-// 5. `imprimirRecibo()`: Gera um recibo da ordem de serviço, incluindo informações detalhadas sobre os itens, o carro e o custo total.
-// 6. `agendarDataDeEntrega()`: Agenda uma data de entrega para a ordem de serviço.
-// 7. `registrarPagamento(float valor)`: Registra um pagamento parcial ou total da ordem de serviço.
-// Lembre-se de que a escolha de quais métodos adicionar às classes depende dos requisitos do sistema e das funcionalidades desejadas. Certifique-se de que os métodos sejam bem documentados e sigam as melhores práticas de programação.
+// 1. `adicionarItem(Item item)`: Adiciona um item à ordem de servico.
+// 2. `removerItem(Item item)`: Remove um item da ordem de servico.
+// 3. `calcularTotal()`: Recalcula o total da ordem de servico com base nos itens.
+// 4. `adicionarTaxaDeServico(float taxa)`: Adiciona uma taxa de servico à ordem de servico.
+// 5. `imprimirRecibo()`: Gera um recibo da ordem de servico, incluindo informacões detalhadas sobre os itens, o carro e o custo total.
+// 6. `agendarDataDeEntrega()`: Agenda uma data de entrega para a ordem de servico.
+// 7. `registrarPagamento(float valor)`: Registra um pagamento parcial ou total da ordem de servico.
+// Lembre-se de que a escolha de quais métodos adicionar às classes depende dos requisitos do sistema e das funcionalidades desejadas. Certifique-se de que os métodos sejam bem documentados e sigam as melhores práticas de programacão.
 
 import java.util.ArrayList;
 
 public class tp {
   public static void main(String[] args) {
-    // Testes para a classe Carro
-    testCarro();
+    // Criando uma ordem de servico
+    OrdemDeServico os = new OrdemDeServico();
 
-    // Testes para a classe Item
-    testItem();
+    // Adicionando um carro à ordem de servico
+    os.adicionarCarro();
 
-    // Testes para a classe OrdemDeServico
-    testOrdemDeServico();
-  }
+    // Adicionando itens à ordem de servico
+    os.adicionarItem();
 
-  static void testCarro() {
-    Carro carro = new Carro();
-    carro.setPlaca("ABC1234");
-    carro.setCor("Azul");
-    carro.setMarca("Toyota");
+    // Imprimindo a ordem de servico
+    os.imprimirOS();
 
-    System.out.println("Carro:");
-    System.out.println("Placa: " + carro.getPlaca());
-    System.out.println("Cor: " + carro.getCor());
-    System.out.println("Marca: " + carro.getMarca());
-  }
-
-  static void testItem() {
-    Item item = new Item();
-    item.setNome("Produto 1");
-    item.setPreco(50.0f);
-    item.setQtde(2);
-
-    System.out.println("Item:");
-    System.out.println("Nome: " + item.getNome());
-    System.out.println("Preço: " + item.getPreco());
-    System.out.println("Quantidade: " + item.getQtde());
-    System.out.println("Total: " + item.calculaTotal());
-  }
-
-  static void testOrdemDeServico() {
-    OrdemDeServico ordem = new OrdemDeServico();
-
-    Item item1 = new Item();
-    item1.setNome("Produto 1");
-    item1.setPreco(50.0f);
-    item1.setQtde(2);
-
-    Item item2 = new Item();
-    item2.setNome("Produto 2");
-    item2.setPreco(30.0f);
-    item2.setQtde(3);
-
-    System.out.println("Ordem de Serviço:");
-    System.out.println("Adicionando itens à ordem de serviço...");
-    ordem.adicionarItem(item1);
-    ordem.adicionarItem(item2);
-
-    System.out.println("Itens na ordem de serviço:");
-    ordem.imprimirOS();
-
-    System.out.println("Total da Ordem de Serviço: " + ordem.getTotal());
-
-    System.out.println("Removendo um item da ordem de serviço...");
-    if (ordem.removerItem(item1)) {
-      System.out.println("Item removido com sucesso.");
+    // Removendo um item da ordem de servico
+    if (os.removerItem()) {
+      System.out.println("Item removido com sucesso!");
+      System.out.println("Total da Ordem de Servico apos a remocao: R$" + os.getTotal());
     } else {
-      System.out.println("Não foi possível remover o item.");
+      System.out.println("Item nao encontrado ou remocao nao realizada.");
     }
-    if (ordem.removerItem(item1)) {
-      System.out.println("Item removido com sucesso.");
-    } else {
-      System.out.println("Não foi possível remover o item.");
-    }
-
-    System.out.println("Novo total da Ordem de Serviço: " + ordem.getTotal());
   }
 
   static class Carro {
     String modelo;
+
     String placa;
     String cor;
     String marca;
+
+    public String getModelo() {
+      return modelo;
+    }
+
+    public void setModelo(String modelo) {
+      this.modelo = modelo;
+    }
 
     public String getPlaca() {
       return placa;
@@ -129,9 +86,18 @@ public class tp {
   }
 
   static class Item {
+    private int id;
     private String nome;
     private float preco;
     private int qtde;
+
+    public int getId() {
+      return id;
+    }
+
+    public void setId(int id) {
+      this.id = id;
+    }
 
     public String getNome() {
       return nome;
@@ -192,19 +158,71 @@ public class tp {
       return soma;
     }
 
-    private void imprimirOS() {
-      System.out.println("QTDE | ITEM | PRECO");
+    public void imprimirOS() {
+      System.out.println("Ordem de Servico:");
+      System.out.println("Placa do Carro: " + this.getCarro().getPlaca());
+      System.out.println("Cor do Carro: " + this.getCarro().getCor());
+      System.out.println("Marca do Carro: " + this.getCarro().getMarca());
+      System.out.println("Modelo do Carro: " + this.getCarro().getModelo());
+      System.out.println();
+
+      System.out.println("Itens:");
+      System.out.println("ID  | Nome                | Preco   | Qtde | Total");
       for (Item item : itens) {
-        System.out.println(item.getQtde() + " | " + item.getNome() + " | " + item.getPreco());
+        System.out.printf("%-4d| %-20s| R$%-6.2f| %-5d| R$%-6.2f%n",
+            item.getId(), item.getNome(), item.getPreco(), item.getQtde(), item.calculaTotal());
       }
+      System.out.println("Total da Ordem de Servico: R$" + this.getTotal());
     }
 
-    private boolean removerItem(Item i) {
-      return itens.remove(i);
+    public boolean removerItem() {
+      System.out.println("informe o id do item");
+      for (Item item : itens) {
+        System.out.println(item.getId() + " | " + item.getNome());
+      }
+      int id = Integer.parseInt(System.console().readLine());
+      for (Item item : itens) {
+        if (item.getId() == id) {
+          itens.remove(item);
+          return true;
+        }
+      }
+      return false;
     }
 
-    private boolean adicionarItem(Item i) {
-      return itens.add(i);
+    public void adicionarItem() {
+      System.out.println("informe o nome do item");
+      String nome = System.console().readLine();
+      System.out.println("informe o preco do item");
+      float preco = Float.parseFloat(System.console().readLine());
+      System.out.println("informe a quantidade do item");
+      int qtde = Integer.parseInt(System.console().readLine());
+
+      Item item = new Item();
+      item.setNome(nome);
+      item.setPreco(preco);
+      item.setQtde(qtde);
+
+      this.itens.add(item);
+    }
+
+    public void adicionarCarro() {
+      System.out.println("informe a placa do carro");
+      String placa = System.console().readLine();
+      System.out.println("informe a cor do carro");
+      String cor = System.console().readLine();
+      System.out.println("informe a marca do carro");
+      String marca = System.console().readLine();
+      System.out.println("informe o modelo do carro");
+      String modelo = System.console().readLine();
+
+      Carro carro = new Carro();
+      carro.setPlaca(placa);
+      carro.setCor(cor);
+      carro.setMarca(marca);
+      carro.setModelo(modelo);
+
+      this.setCarro(carro);
     }
   }
 }
