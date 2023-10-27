@@ -1,4 +1,5 @@
-public class Item {
+package arquivos_separados;
+class Item {
   private int id;
   private String nome;
   private float preco;
@@ -60,7 +61,24 @@ public class Item {
     return (preco * (1 - desconto / 100));
   }
 
+  public void alteraPreco(float preco, Pedido pedido) {
+    this.setPreco(preco);
+    System.out.println("====================================================");
+    System.out.println("Preco alterado com sucesso");
+    System.out.println("====================================================");
+    pausa();
+    pedido.imprimirMenu();
+  }
+
   private int geraID() {
     return ++ultimoID;
+  }
+
+  public static void pausa() {
+    try {
+      Thread.sleep(2000);
+    } catch (Exception e) {
+
+    }
   }
 }

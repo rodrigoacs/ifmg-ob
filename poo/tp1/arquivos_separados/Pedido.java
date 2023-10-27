@@ -1,13 +1,15 @@
+package arquivos_separados;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Pedido {
+class Pedido {
   static Scanner in = new Scanner(System.in);
   private static int ultimoID = 0;
 
   private ArrayList<Item> itens = new ArrayList<>();
+
   private float total;
   private String cliente;
   private String data;
@@ -26,6 +28,14 @@ public class Pedido {
     this.cliente = cliente;
     this.data = dataFormatada;
     this.id = geraID();
+  }
+
+  public ArrayList<Item> getItens() {
+    return itens;
+  }
+
+  public void setItens(ArrayList<Item> itens) {
+    this.itens = itens;
   }
 
   public int getId() {
@@ -81,11 +91,12 @@ public class Pedido {
     System.out.println("1 - Adicionar item");
     System.out.println("2 - Remover item");
     System.out.println("3 - Imprimir pedido");
-    System.out.println("4 - Encerrar pedido");
+    System.out.println("4 - Alterar preço de um item");
+    System.out.println("5 - Encerrar pedido");
     System.out.println("====================================================");
   }
 
-  private void imprimirItens() {
+  public void imprimirItens() {
     System.out.println("====================================================");
     System.out.println("Itens:");
     System.out.println("ID  | Nome                | Preco   | Qtde | Total");
