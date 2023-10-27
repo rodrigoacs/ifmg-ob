@@ -24,10 +24,10 @@ public class principal {
       op1 = Integer.parseInt(in.nextLine());
       switch (op1) {
         case 1:
-          System.out.println("ID  | Nome                | Preco   | Qtde | Total");
+          System.out.println("ID  | Nome                 | Data       | Total");
           for (Pedido pedido : pedidos) {
             System.out.println("====================================================");
-            System.out.printf("%-4d| %-20s| R$%-6.2f| %-5d| R$%-6.2f%n",
+            System.out.printf("%-4d| %-20s | %-10s | R$%-6.2f%n",
                 pedido.getId(), pedido.getCliente(), pedido.getData(), pedido.getTotal());
           }
           System.out.println("====================================================");
@@ -112,8 +112,8 @@ public class principal {
     private int id;
 
     Pedido(String cliente, String data) {
-      this.cliente = in.nextLine();
-      this.data = in.nextLine();
+      this.cliente = cliente;
+      this.data = data;
       this.id = geraID();
     }
 
