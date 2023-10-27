@@ -1,33 +1,93 @@
-// As classes `Carro`, `Item` e `OrdemDeServico` podem ter vários métodos adicionais, dependendo dos requisitos e funcionalidades que você deseja implementar. Aqui estão algumas sugestões de métodos que podem ser úteis em cada uma dessas classes:
-// ### Classe Carro:
-// 1. `calcularConsumoCombustivel()`: Este método pode calcular o consumo médio de combustível com base em dados de quilometragem e abastecimento.
-// 2. `iniciarMotor()`: Um método para ligar o motor do carro.
-// 3. `pararMotor()`: Um método para desligar o motor do carro.
-// 4. `acelerar()`: Método para acelerar o carro.
-// 5. `frear()`: Método para frear o carro.
-// ### Classe Item:
-// 1. `calcularValorTotal()`: Calcula o valor total com base na quantidade e no preco do item.
-// 2. `validarItem()`: Verifica se o item é válido de acordo com determinados critérios.
-// 3. `definirCategoria()`: Atribui uma categoria ao item com base em suas características.
-// ### Classe OrdemDeServico:
-// 1. `adicionarItem(Item item)`: Adiciona um item à ordem de servico.
-// 2. `removerItem(Item item)`: Remove um item da ordem de servico.
-// 3. `calcularTotal()`: Recalcula o total da ordem de servico com base nos itens.
-// 4. `adicionarTaxaDeServico(float taxa)`: Adiciona uma taxa de servico à ordem de servico.
-// 5. `imprimirRecibo()`: Gera um recibo da ordem de servico, incluindo informacões detalhadas sobre os itens, o carro e o custo total.
-// 6. `agendarDataDeEntrega()`: Agenda uma data de entrega para a ordem de servico.
-// 7. `registrarPagamento(float valor)`: Registra um pagamento parcial ou total da ordem de servico.
-// Lembre-se de que a escolha de quais métodos adicionar às classes depende dos requisitos do sistema e das funcionalidades desejadas. Certifique-se de que os métodos sejam bem documentados e sigam as melhores práticas de programacão.
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class tp {
   public static void main(String[] args) {
-    OrdemDeServico os = new OrdemDeServico();
-    os.adicionarCarro();
-    os.adicionarItem();
-    os.adicionarItem();
-    os.adicionarItem();
-    os.imprimirOS();
-    os.removerItem();
-    os.imprimirOS();
+    System.out.print("\033[H\033[2J");
+    ArrayList<Pedido> pedidos = new ArrayList<>();
+    Scanner in = new Scanner(System.in);
+    String resposta;
+    int op1 = 0;
+
+    System.out.println("====================================================");
+    System.out.println("Bem vindo ao sistema de pedidos");
+    System.out.println("====================================================");
+    do {
+      System.out.println("1 - Listar pedidos");
+      System.out.println("2 - Criar pedido");
+      System.out.println("3 - Sair");
+      System.out.println("====================================================");
+      op1 = Integer.parseInt(in.nextLine());
+      switch (op1) {
+        case 1:
+          System.out.println("ID  | Nome                | Preco   | Qtde | Total");
+          for (Pedido pedido : pedidos) {
+            System.out.println("====================================================");
+            System.out.printf("%-4d| %-20s| R$%-6.2f| %-5d| R$%-6.2f%n",
+                pedido.getId(), pedido.getCliente(), pedido.getData(), pedido.getTotal());
+          }
+          System.out.println("====================================================");
+          break;
+        case 2:
+          Pedido p;
+          System.out.print("\033[H\033[2J");
+          System.out.println("====================================================");
+          System.out.println("Informe o nome do cliente");
+          String cliente = in.nextLine();
+          System.out.println("Informe a data do pedido (dd/mm/aaaa ou 'hoje' para data atual')");
+          String data = in.nextLine();
+          if (data.equals("hoje")) {
+            p = new Pedido(cliente);
+          } else {
+            p = new Pedido(cliente, data);
+          }
+          System.out.println("====================================================");
+
+          p.imprimirMenu();
+          do {
+            resposta = in.nextLine();
+            switch (resposta) {
+              case "1":
+                p.adicionarItem();
+                break;
+              case "2":
+                p.removerItem();
+                break;
+              case "3":
+                p.imprimirPedido();
+                break;
+              case "4":
+                pedidos.add(p);
+                System.out.println("====================================================");
+                System.out.println("Pedido adicionado com sucesso");
+                System.out.println("====================================================");
+                pausa();
+                System.out.print("\033[H\033[2J");
+                break;
+              default:
+                System.out.println("====================================================");
+                System.out.println("Opcao invalida");
+                System.out.println("====================================================");
+                break;
+            }
+          } while (!resposta.equals("4"));
+          break;
+        case 3:
+          break;
+        default:
+          System.out.println("====================================================");
+          System.out.println("Opcao invalida");
+          System.out.println("====================================================");
+          break;
+      }
+    } while (op1 != 3);
+  }
+
+  public static void pausa() {
+    try {
+      Thread.sleep(2000);
+    } catch (Exception e) {
+
+    }
   }
 }
