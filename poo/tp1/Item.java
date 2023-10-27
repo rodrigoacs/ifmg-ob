@@ -6,6 +6,13 @@ public class Item {
 
   private static int ultimoID = 0;
 
+  Item(String nome, int qtde, float preco, float desconto) {
+    this.id = geraID();
+    this.nome = nome;
+    this.qtde = qtde;
+    this.preco = calculaDesconto(desconto, preco);
+  }
+
   Item(String nome, float preco, int qtde) {
     this.id = geraID();
     this.nome = nome;
@@ -47,6 +54,10 @@ public class Item {
 
   public double calculaTotal() {
     return this.qtde * this.preco;
+  }
+
+  public float calculaDesconto(float desconto, float preco) {
+    return (preco * (1 - desconto / 100));
   }
 
   private int geraID() {
