@@ -1,3 +1,4 @@
+package arquivos_separados;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -57,6 +58,20 @@ public class tp {
                 p.imprimirPedido();
                 break;
               case "4":
+                System.out.print("\033[H\033[2J");
+                p.imprimirItens();
+                System.out.println("====================================================");
+                System.out.println("Informe o id do item");
+                int id = Integer.parseInt(in.nextLine());
+                System.out.println("Informe o novo preco do item");
+                float preco = Float.parseFloat(in.nextLine());
+                for (Item item : p.getItens()) {
+                  if (item.getId() == id) {
+                    item.alteraPreco(preco, p);
+                  }
+                }
+                break;
+              case "5":
                 pedidos.add(p);
                 System.out.println("====================================================");
                 System.out.println("Pedido adicionado com sucesso");
@@ -65,12 +80,11 @@ public class tp {
                 System.out.print("\033[H\033[2J");
                 break;
               default:
-                System.out.println("====================================================");
-                System.out.println("Opcao invalida");
-                System.out.println("====================================================");
+                System.out.print("\033[H\033[2J");
+                p.imprimirMenu();
                 break;
             }
-          } while (!resposta.equals("4"));
+          } while (!resposta.equals("5"));
           break;
         case 3:
           break;
@@ -81,6 +95,7 @@ public class tp {
           break;
       }
     } while (op1 != 3);
+
   }
 
   public static void pausa() {
