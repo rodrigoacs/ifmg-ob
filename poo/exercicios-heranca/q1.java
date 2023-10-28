@@ -1,20 +1,5 @@
 public class q1 {
   public static void main(String[] args) {
-    // Teste para a classe Funcionario
-    Funcionario funcionario = new Funcionario();
-    funcionario.setNome("João");
-    funcionario.setSalario(3000.0);
-    funcionario.addAumento(500.0);
-    funcionario.exibeDados();
-
-    // Teste para a classe Assistente
-    Assistente assistente = new Assistente();
-    assistente.setNome("Maria");
-    assistente.setSalario(2500.0);
-    assistente.setNumeroDeMatricula(12345);
-    assistente.addAumento(300.0);
-    assistente.exibeDados();
-
     // Teste para a classe Administrativo
     Administrativo administrativo = new Administrativo();
     administrativo.setNome("Carlos");
