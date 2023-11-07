@@ -1,0 +1,8 @@
+Teste de desempenho dos algoritmos de ordenacao[I@3d285d7e
+Cenários: Aleatório, Ordenado Crescente e Ordenado Decrescente
+Entradas: 100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000
+Algoritmos: Selection, Insertion, Merge, Quick
+Aleatorio
+Tamanho;Selection;Insertion;Merge;Quick
+100000;5754;970;28;24;
+200000;
