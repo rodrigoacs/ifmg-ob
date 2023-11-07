@@ -3,43 +3,54 @@ import java.util.Random;
 
 public class ordenacao {
   public static void main(String[] args) {
-    // a saída do código segue um modelo de csv
-    // para facilitar a importação no
-    // excel para criação dos gráficos
-    int size = 10000;
-    int growthRate = 10000;
-    int tests = 10;
+    int[] sizes = { 100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000 };
+    String[] scenarios = { "Aleatorio", "Ordenado Crescente", "Ordenado Decrescente" };
+    String[] algorithms = { "Selection", "Insertion", "Merge", "Quick" };
 
-    System.out.println("tamanho;selection;insertion;merge;quick");
-    for (int i = 0; i < tests; i++) {
-      System.out.print(size + ";");
-      int[] arrayBase = generateRandomArray(size);
-      long startTime, endTime;
+    System.out.println("Teste de desempenho dos algoritmos de ordenacao");
+    System.out.println("Cenários: Aleatório, Ordenado Crescente e Ordenado Decrescente");
+    System.out.println("Entradas: 100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000");
+    System.out.println("Algoritmos: Selection, Insertion, Merge, Quick");
 
-      int[] selectionArray = arrayBase.clone();
-      startTime = System.currentTimeMillis();
-      selectionSort(selectionArray);
-      endTime = System.currentTimeMillis();
-      System.out.print((endTime - startTime) + ";");
-
-      int[] insertionArray = arrayBase.clone();
-      startTime = System.currentTimeMillis();
-      insertionSort(insertionArray);
-      endTime = System.currentTimeMillis();
-      System.out.print((endTime - startTime) + ";");
-
-      int[] mergeArray = arrayBase.clone();
-      startTime = System.currentTimeMillis();
-      mergeSort(mergeArray, 0, mergeArray.length - 1);
-      endTime = System.currentTimeMillis();
-      System.out.print((endTime - startTime) + ";");
-
-      int[] quickArray = arrayBase.clone();
-      startTime = System.currentTimeMillis();
-      quickSort(quickArray, 0, quickArray.length - 1);
-      endTime = System.currentTimeMillis();
-      System.out.print((endTime - startTime) + ";");
-      size += growthRate;
+    for (String scenario : scenarios) {
+      System.out.println(scenario);
+      System.out.println("Tamanho;Selection;Insertion;Merge;Quick");
+      for (int size : sizes) {
+        System.out.print(size + ";");
+        int[] arrayBase = {};
+        switch (scenario) {
+          case "Aleatorio":
+            arrayBase = generateRandomArray(size);
+            break;
+          case "Ordenado Crescente":
+            arrayBase = generateSortedArray(size);
+            break;
+          case "Ordenado Decrescente":
+            arrayBase = generateReverseSortedArray(size);
+            break;
+        }
+        for (String algorithm : algorithms) {
+          int[] array = arrayBase.clone();
+          long startTime = System.currentTimeMillis();
+          switch (algorithm) {
+            case "Selection":
+              selectionSort(array);
+              break;
+            case "Insertion":
+              insertionSort(array);
+              break;
+            case "Merge":
+              mergeSort(array, 0, array.length - 1);
+              break;
+            case "Quick":
+              quickSort(array, 0, array.length - 1);
+              break;
+          }
+          long endTime = System.currentTimeMillis();
+          System.out.print((endTime - startTime) + ";");
+        }
+        System.out.println();
+      }
       System.out.println();
     }
   }
@@ -163,6 +174,22 @@ public class ordenacao {
 
       uniqueValues.add(value);
       array[i] = value;
+    }
+    return array;
+  }
+
+  public static int[] generateSortedArray(int size) {
+    int[] array = new int[size];
+    for (int i = 0; i < size; i++) {
+      array[i] = i;
+    }
+    return array;
+  }
+
+  public static int[] generateReverseSortedArray(int size) {
+    int[] array = new int[size];
+    for (int i = 0; i < size; i++) {
+      array[i] = size - i;
     }
     return array;
   }
