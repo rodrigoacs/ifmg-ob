@@ -3,9 +3,10 @@ import java.util.Scanner;
 public class aula {
   public static void main(String[] args) {
     Funcionario f1 = new Secretaria("Maria", "0102");
-    Gerente g = new Gerente(2147483647, "Joao", "0304", "Compras");
+    Gerente g = new Gerente(123, "Joao", "0304", "Financeiro");
     Diretor d = new Diretor("Paula", "0706", 5678);
     Secretaria s = new Secretaria("Marta", "0943");
+    Cliente c = new Cliente("Saulo", 9988);
 
     ControleBonificacao cb = new ControleBonificacao();
 
@@ -30,9 +31,11 @@ public class aula {
     cb.regitra(s);
 
     SistemaInterno si = new SistemaInterno();
-    si.login(g);
+    // si.login(g);
+    si.login(c);
 
-    // System.out.println("Total de bonificacao a ser paga pela empresa eh: " + cb.getTotalDeBonif());
+    // System.out.println("Total de bonificacao a ser paga pela empresa eh: " +
+    // cb.getTotalDeBonif());
   }
 
   public static class ControleBonificacao {
@@ -61,7 +64,7 @@ public class aula {
     }
   }
 
-  public static class Diretor extends Funcionario {
+  public static class Diretor extends Funcionario implements Autenticavel {
     private int numDepto;
     private int senha;
 
@@ -120,7 +123,7 @@ public class aula {
     }
   }
 
-  public static class Gerente extends FunAuntenticavel {
+  public static class Gerente extends Funcionario implements Autenticavel {
     private int senha;
     private int numFuncGerenciados;
     private String depto;
@@ -133,7 +136,7 @@ public class aula {
 
     public boolean autentica(int senha) {
       System.out.println("Sou o gerente " + this.nome + " e estou validando minha senha!");
-      return senha == this.senha && DeptosAutorizados.validaDepto(this.depto) ? true : false;
+      return (senha == this.senha && DeptosAutorizados.validaDepto(this.depto)) ? true : false;
     }
 
     public double calculaBonificacao() {
@@ -170,17 +173,55 @@ public class aula {
   public static class SistemaInterno {
     Scanner teclado = new Scanner(System.in);
 
-    public void login(FunAuntenticavel fun) {
+    public void login(Autenticavel fun) {
       System.out.println("Informe sua senha: ");
       System.out.println(fun.autentica(teclado.nextInt()) ? "Acesso Permitido!" : "Acesso Negado!");
     }
   }
 
-  public static abstract class FunAuntenticavel extends Funcionario {
-    public FunAuntenticavel(String nome, String cpf) {
-      super(nome, cpf);
+  public interface Autenticavel {
+    public boolean autentica(int senha);
+  }
+
+  public static class Cliente implements Autenticavel {
+    private String nome;
+    private int senha;
+    private String depto = "Cliente";
+
+    public Cliente(String nome, int senha) {
+      this.nome = nome;
+      this.senha = senha;
     }
 
-    public abstract boolean autentica(int senha);
+    public String getNome() {
+      return nome;
+    }
+
+    public void setNome(String nome) {
+      this.nome = nome;
+    }
+
+    public int getSenha() {
+      return senha;
+    }
+
+    public void setSenha(int senha) {
+      this.senha = senha;
+    }
+
+    public String getDepto() {
+      return depto;
+    }
+
+    public void setDepto(String depto) {
+      this.depto = depto;
+    }
+
+    @Override
+    public boolean autentica(int senha) {
+      System.out.println("Sou o cliente " + this.nome + " e estou validando minha senha!");
+      return (senha == this.senha && DeptosAutorizados.validaDepto(this.depto)) ? true : false;
+    }
+
   }
 }
