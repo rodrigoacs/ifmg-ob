@@ -13,30 +13,23 @@ public class principal {
     Scanner in = new Scanner(System.in);
     String resposta;
     int op1 = 0;
-
-    System.out.println("====================================================");
     System.out.println("Bem vindo ao sistema de pedidos");
-    System.out.println("====================================================");
     do {
       System.out.println("1 - Listar pedidos");
       System.out.println("2 - Criar pedido");
       System.out.println("3 - Sair");
-      System.out.println("====================================================");
       op1 = Integer.parseInt(in.nextLine());
       switch (op1) {
         case 1:
           System.out.println("ID  | Nome                 | Data       | Total");
           for (Pedido pedido : pedidos) {
-            System.out.println("====================================================");
             System.out.printf("%-4d| %-20s | %-10s | R$%-6.2f%n",
                 pedido.getId(), pedido.getCliente(), pedido.getData(), pedido.getTotal());
           }
-          System.out.println("====================================================");
           break;
         case 2:
           Pedido p;
           System.out.print("\033[H\033[2J");
-          System.out.println("====================================================");
           System.out.println("Informe o nome do cliente");
           String cliente = in.nextLine();
           System.out.println("Informe a data do pedido (dd/mm/aaaa ou 'hoje' para data atual')");
@@ -46,7 +39,6 @@ public class principal {
           } else {
             p = new Pedido(cliente, data);
           }
-          System.out.println("====================================================");
 
           p.imprimirMenu();
           do {
@@ -64,7 +56,6 @@ public class principal {
               case "4":
                 System.out.print("\033[H\033[2J");
                 p.imprimirItens();
-                System.out.println("====================================================");
                 System.out.println("Informe o id do item");
                 int id = Integer.parseInt(in.nextLine());
                 System.out.println("Informe o novo preco do item");
@@ -77,9 +68,7 @@ public class principal {
                 break;
               case "5":
                 pedidos.add(p);
-                System.out.println("====================================================");
                 System.out.println("Pedido adicionado com sucesso");
-                System.out.println("====================================================");
                 pausa();
                 System.out.print("\033[H\033[2J");
                 break;
@@ -93,9 +82,7 @@ public class principal {
         case 3:
           break;
         default:
-          System.out.println("====================================================");
           System.out.println("Opcao invalida");
-          System.out.println("====================================================");
           break;
       }
     } while (op1 != 3);
@@ -182,19 +169,15 @@ public class principal {
 
     public void imprimirMenu() {
       System.out.print("\033[H\033[2J");
-      System.out.println("====================================================");
       System.out.println("Navegacao:");
-      System.out.println("====================================================");
       System.out.println("1 - Adicionar item");
       System.out.println("2 - Remover item");
       System.out.println("3 - Imprimir pedido");
       System.out.println("4 - Alterar preco de um item");
       System.out.println("5 - Encerrar pedido");
-      System.out.println("====================================================");
     }
 
     private void imprimirItens() {
-      System.out.println("====================================================");
       System.out.println("Itens:");
       System.out.println("ID  | Nome                | Preco   | Qtde | Total");
       for (Item item : itens) {
@@ -205,12 +188,9 @@ public class principal {
 
     public void imprimirPedido() {
       imprimirMenu();
-      System.out.println("====================================================");
       System.out.println("Pedido:");
       imprimirItens();
-      System.out.println("====================================================");
       System.out.println("Total do Pedido: R$" + this.getTotal());
-      System.out.println("====================================================");
     }
 
     public void removerItem() {
@@ -256,9 +236,7 @@ public class principal {
 
       this.itens.add(item);
 
-      System.out.println("====================================================");
       System.out.println("Item adicionado com sucesso");
-      System.out.println("====================================================");
       pausa();
       imprimirMenu();
     }
@@ -328,9 +306,7 @@ public class principal {
 
     public void alteraPreco(float preco, Pedido pedido) {
       this.setPreco(preco);
-      System.out.println("====================================================");
       System.out.println("Preco alterado com sucesso");
-      System.out.println("====================================================");
       pausa();
       pedido.imprimirMenu();
     }
