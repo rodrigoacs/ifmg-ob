@@ -173,12 +173,19 @@ public class gui {
     }
 
     private void imprimirItens() {
-      System.out.println("Itens:");
-      System.out.println("ID  | Nome                | Preco   | Qtde | Total");
-      for (Item item : itens) {
-        System.out.printf("%-4d| %-20s| R$%-6.2f| %-5d| R$%-6.2f%n",
-            item.getId(), item.getNome(), item.getPreco(), item.getQtde(), item.calculaTotal());
+      JTable table;
+      String[] colunas = { "ID", "Nome", "Preco", "Qtde", "Total" };
+      String[][] dados = new String[itens.size()][5];
+      for (int i = 0; i < itens.size(); i++) {
+        dados[i][0] = String.valueOf(itens.get(i).getId());
+        dados[i][1] = itens.get(i).getNome();
+        dados[i][2] = String.valueOf(itens.get(i).getPreco());
+        dados[i][3] = String.valueOf(itens.get(i).getQtde());
+        dados[i][4] = String.valueOf(itens.get(i).calculaTotal());
       }
+      table = new JTable(dados, colunas);
+      JScrollPane scrollPane = new JScrollPane(table);
+      JOptionPane.showMessageDialog(null, scrollPane, "Itens", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void imprimirPedido() {
@@ -210,7 +217,6 @@ public class gui {
     }
 
     public void adicionarItem() {
-      // adaptado para interface grafica
       String nome = JOptionPane.showInputDialog("Informe o nome do item");
       int qtde = Integer.parseInt(JOptionPane.showInputDialog("Informe a quantidade do item"));
       float preco = Float.parseFloat(JOptionPane.showInputDialog("Informe o preco do item"));
