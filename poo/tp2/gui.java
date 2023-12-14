@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.awt.Component;
+import java.util.Iterator;
 
 public class gui {
 
@@ -162,18 +164,18 @@ public class gui {
       return ++ultimoID;
     }
 
-    public void imprimirMenu() {
-      System.out.print("\033[H\033[2J");
-      System.out.println("Navegacao:");
-      System.out.println("1 - Adicionar item");
-      System.out.println("2 - Remover item");
-      System.out.println("3 - Imprimir pedido");
-      System.out.println("4 - Alterar preco de um item");
-      System.out.println("5 - Encerrar pedido");
+    private boolean removeTabela(JPanel panel) {
+      Component[] components = panel.getComponents();
+      for (Component component : components) {
+        if (component instanceof JTable) {
+          panel.remove(component);
+          return true;
+        }
+      }
+      return false;
     }
 
-    private void imprimirItens() {
-      JTable table;
+    private JTable imprimirItens() {
       String[] colunas = { "ID", "Nome", "Preco", "Qtde", "Total" };
       String[][] dados = new String[itens.size()][5];
       for (int i = 0; i < itens.size(); i++) {
@@ -183,37 +185,31 @@ public class gui {
         dados[i][3] = String.valueOf(itens.get(i).getQtde());
         dados[i][4] = String.valueOf(itens.get(i).calculaTotal());
       }
-      table = new JTable(dados, colunas);
-      JScrollPane scrollPane = new JScrollPane(table);
-      JOptionPane.showMessageDialog(null, scrollPane, "Itens", JOptionPane.PLAIN_MESSAGE);
+      JTable table = new JTable(dados, colunas);
+      return table;
     }
 
-    public void imprimirPedido() {
-      imprimirMenu();
-      System.out.println("Pedido:");
-      imprimirItens();
-      System.out.println("Total do Pedido: R$" + this.getTotal());
+    private void atualizarTabela(JPanel panel) {
+      removeTabela(panel);
+      panel.add(imprimirItens());
     }
 
     public void removerItem() {
-      imprimirMenu();
-      System.out.println();
       imprimirItens();
-      System.out.println("informe o id do item");
-      int id = Integer.parseInt(in.nextLine());
-      System.out.println("informe a quantidade do item");
-      int qtde = Integer.parseInt(in.nextLine());
-      for (Item item : itens) {
+      int id = Integer.parseInt(JOptionPane.showInputDialog("Informe o id do item"));
+      int qtde = Integer.parseInt(JOptionPane.showInputDialog("Informe a quantidade do item"));
+
+      Iterator<Item> iterator = itens.iterator();
+      while (iterator.hasNext()) {
+        Item item = iterator.next();
         if (item.getId() == id) {
           if (item.getQtde() > qtde) {
             item.setQtde(item.getQtde() - qtde);
           } else {
-            itens.remove(item);
+            iterator.remove();
           }
         }
       }
-      pausa();
-      imprimirMenu();
     }
 
     public void adicionarItem() {
@@ -225,6 +221,25 @@ public class gui {
       itens.add(item);
     }
 
+    public void alterarPreco() {
+      int id = Integer.parseInt(JOptionPane.showInputDialog("Informe o ID do item"));
+      float novoPreco = Float.parseFloat(JOptionPane.showInputDialog("Informe o novo preço"));
+
+      for (Item item : itens) {
+        if (item.getId() == id) {
+          item.setPreco(novoPreco);
+          JOptionPane.showMessageDialog(null, "Preço alterado com sucesso!");
+          return;
+        }
+      }
+      JOptionPane.showMessageDialog(null, "Item não encontrado com o ID fornecido.");
+    }
+
+    public void atualizarLabelTotal(JLabel label) {
+      this.total = calculaTotal();
+      label.setText("Cliente: " + this.cliente + " Data: " + this.data + " Total: " + this.total);
+    }
+
     public void gerarGui() {
       JFrame frame = new JFrame("Pedido");
       frame.setSize(800, 800);
@@ -233,14 +248,29 @@ public class gui {
       JPanel panel = new JPanel();
       JButton adicionarItemBtn = new JButton("Adicionar Item");
       JButton removerItemBtn = new JButton("Remover Item");
-      JButton imprimirPedidoBtn = new JButton("Imprimir Pedido");
       JButton alterarPrecoBtn = new JButton("Alterar Preco");
       JButton voltar = new JButton("Voltar");
+      JLabel label = new JLabel("Cliente: " + this.cliente + " Data: " + this.data + " Total: " + this.total);
 
       adicionarItemBtn.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
           adicionarItem();
+          atualizarTabela(panel);
+          atualizarLabelTotal(label);
+          frame.revalidate();
+          frame.repaint();
+        }
+      });
+
+      alterarPrecoBtn.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          alterarPreco();
+          atualizarTabela(panel);
+          atualizarLabelTotal(label);
+          frame.revalidate();
+          frame.repaint();
         }
       });
 
@@ -248,13 +278,10 @@ public class gui {
         @Override
         public void actionPerformed(ActionEvent e) {
           removerItem();
-        }
-      });
-
-      imprimirPedidoBtn.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          imprimirPedido();
+          atualizarTabela(panel);
+          atualizarLabelTotal(label);
+          frame.revalidate();
+          frame.repaint();
         }
       });
 
@@ -265,9 +292,9 @@ public class gui {
         }
       });
 
+      panel.add(label);
       panel.add(adicionarItemBtn);
       panel.add(removerItemBtn);
-      panel.add(imprimirPedidoBtn);
       panel.add(alterarPrecoBtn);
       panel.add(voltar);
       frame.add(panel);
@@ -339,13 +366,6 @@ public class gui {
 
     public float calculaDesconto(float desconto, float preco) {
       return (preco * (1 - desconto / 100));
-    }
-
-    public void alteraPreco(float preco, Pedido pedido) {
-      this.setPreco(preco);
-      System.out.println("Preco alterado com sucesso");
-      pausa();
-      pedido.imprimirMenu();
     }
 
     private int geraID() {
