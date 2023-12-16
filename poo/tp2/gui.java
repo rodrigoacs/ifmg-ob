@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -9,71 +10,74 @@ import java.awt.Component;
 import java.util.Iterator;
 
 public class gui {
+  static Boolean atualizarPedidos = true;
 
   public static void main(String[] args) {
     ArrayList<Pedido> pedidos = new ArrayList<>();
     Gui gui = new Gui(pedidos);
-    while (true) {
-      try {
-        Thread.sleep(1000);
-      } catch (Exception e) {
-        System.err.println(e);
-      }
-    }
   }
 
   static class Gui {
     private JFrame frame;
     private JPanel panel;
     private JButton criarPedidoBtn;
-    private JButton listaPedidosBtn;
+    private JTable listaPedidos;
 
     private ArrayList<Pedido> pedidos = new ArrayList<>();
 
     public Gui(ArrayList<Pedido> pedidos) {
       frame = new JFrame("Interface");
-      frame.setSize(300, 300);
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-      criarPedido();
-      listarPedidos();
-
       panel = new JPanel();
 
-      panel.add(listaPedidosBtn);
-      panel.add(criarPedidoBtn);
-      frame.add(panel);
-      frame.setVisible(true);
-    }
+      frame.setSize(800, 800);
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    public void listarPedidos() {
-      listaPedidosBtn = new JButton("Listar Pedidos");
-      listaPedidosBtn.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          String[] colunas = { "ID", "Nome", "Data", "Total" };
-          String[][] dados = new String[pedidos.size()][4];
-          for (int i = 0; i < pedidos.size(); i++) {
-            dados[i][0] = String.valueOf(pedidos.get(i).getId());
-            dados[i][1] = pedidos.get(i).getCliente();
-            dados[i][2] = pedidos.get(i).getData();
-            dados[i][3] = String.valueOf(pedidos.get(i).getTotal());
-          }
-          JTable table = new JTable(dados, colunas);
-          JScrollPane scrollPane = new JScrollPane(table);
-          JOptionPane.showMessageDialog(null, scrollPane, "Pedidos", JOptionPane.PLAIN_MESSAGE);
+      while (true) {
+        if (atualizarPedidos) {
+          atualizarPedidos = false;
+          panel.removeAll();
+          panel.add(criarPedido(criarPedidoBtn));
+          panel.add(listarPedidos(listaPedidos));
+          frame.add(panel);
+          frame.revalidate();
+          frame.repaint();
+          frame.setLocationRelativeTo(null);
+          frame.setVisible(true);
         }
-      });
+        pausa();
+      }
     }
 
-    public void criarPedido() {
+    public JTable listarPedidos(JTable table) {
+      String[] colunas = { "ID", "Nome", "Data", "Total" };
+      String[][] dados = new String[pedidos.size()][4];
+      for (int i = 0; i < pedidos.size(); i++) {
+        dados[i][0] = String.valueOf(pedidos.get(i).getId());
+        dados[i][1] = pedidos.get(i).getCliente();
+        dados[i][2] = pedidos.get(i).getData();
+        dados[i][3] = String.valueOf(pedidos.get(i).getTotal());
+      }
+      table = new JTable(dados, colunas);
+      return table;
+    }
+
+    public JButton criarPedido(JButton criarPedidoBtn) {
       criarPedidoBtn = new JButton("Criar Pedido");
       criarPedidoBtn.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
           Pedido p;
-          String cliente = JOptionPane.showInputDialog("Informe o nome do cliente");
-          String data = JOptionPane.showInputDialog("Informe a data do pedido (dd/mm/aaaa ou 'hoje' para data atual')");
+          JTextField clienteField = new JTextField();
+          JTextField dataField = new JTextField();
+
+          Object[] message = { "Cliente:", clienteField, "Data (dd/mm/aaaa ou 'hoje'):", dataField };
+
+          JOptionPane pane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+          pane.createDialog(null, "Criar Pedido").setVisible(true);
+
+          String cliente = clienteField.getText();
+          String data = dataField.getText();
+
           if (data.equals("hoje")) {
             p = new Pedido(cliente);
           } else {
@@ -83,6 +87,7 @@ public class gui {
           p.gerarGui();
         }
       });
+      return criarPedidoBtn;
     }
   }
 
@@ -195,9 +200,16 @@ public class gui {
     }
 
     public void removerItem() {
-      imprimirItens();
-      int id = Integer.parseInt(JOptionPane.showInputDialog("Informe o id do item"));
-      int qtde = Integer.parseInt(JOptionPane.showInputDialog("Informe a quantidade do item"));
+      JTextField idField = new JTextField();
+      JTextField qtdeField = new JTextField();
+
+      Object[] message = { "ID:", idField, "Quantidade:", qtdeField };
+
+      JOptionPane pane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+      pane.createDialog(null, "Remover Item").setVisible(true);
+
+      int id = Integer.parseInt(idField.getText());
+      int qtde = Integer.parseInt(qtdeField.getText());
 
       Iterator<Item> iterator = itens.iterator();
       while (iterator.hasNext()) {
@@ -213,17 +225,37 @@ public class gui {
     }
 
     public void adicionarItem() {
-      String nome = JOptionPane.showInputDialog("Informe o nome do item");
-      int qtde = Integer.parseInt(JOptionPane.showInputDialog("Informe a quantidade do item"));
-      float preco = Float.parseFloat(JOptionPane.showInputDialog("Informe o preco do item"));
-      float desconto = Float.parseFloat(JOptionPane.showInputDialog("Informe o desconto do item"));
+      JTextField nomeField = new JTextField();
+      JTextField qtdeField = new JTextField();
+      JTextField precoField = new JTextField();
+      JTextField descontoField = new JTextField();
+
+      Object[] message = { "Nome:", nomeField, "Quantidade:", qtdeField, "Preco:", precoField, "Desconto:",
+          descontoField };
+
+      JOptionPane pane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+      pane.createDialog(null, "Adicionar Item").setVisible(true);
+
+      String nome = nomeField.getText();
+      int qtde = Integer.parseInt(qtdeField.getText());
+      float preco = Float.parseFloat(precoField.getText());
+      float desconto = Float.parseFloat(descontoField.getText());
+
       Item item = new Item(nome, qtde, preco, desconto);
       itens.add(item);
     }
 
     public void alterarPreco() {
-      int id = Integer.parseInt(JOptionPane.showInputDialog("Informe o ID do item"));
-      float novoPreco = Float.parseFloat(JOptionPane.showInputDialog("Informe o novo preço"));
+      JTextField idField = new JTextField();
+      JTextField novoPrecoField = new JTextField();
+
+      Object[] message = { "ID:", idField, "Novo Preco:", novoPrecoField };
+
+      JOptionPane pane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+      pane.createDialog(null, "Alterar Preco").setVisible(true);
+
+      int id = Integer.parseInt(idField.getText());
+      float novoPreco = Float.parseFloat(novoPrecoField.getText());
 
       for (Item item : itens) {
         if (item.getId() == id) {
@@ -298,10 +330,12 @@ public class gui {
       panel.add(alterarPrecoBtn);
       panel.add(voltar);
       frame.add(panel);
+      frame.setLocationRelativeTo(null);
       frame.setVisible(true);
     }
 
     public void voltar(JFrame frame) {
+      atualizarPedidos = true;
       frame.dispose();
     }
   }
@@ -375,7 +409,7 @@ public class gui {
 
   public static void pausa() {
     try {
-      Thread.sleep(2000);
+      Thread.sleep(100);
     } catch (Exception e) {
 
     }
