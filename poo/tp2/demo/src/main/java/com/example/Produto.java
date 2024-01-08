@@ -121,6 +121,23 @@ public class Produto implements DB<Produto> {
     }
   }
 
+  public boolean update(int id, String nome, String preco) {
+    try (Connection conexao = DriverManager.getConnection(url, usuario, senha)) {
+      String sql = "UPDATE produtos SET nome = ?, preco = ? WHERE id = ?";
+      try (PreparedStatement statement = conexao.prepareStatement(sql)) {
+        statement.setString(1, nome);
+        statement.setDouble(2, Double.parseDouble(preco));
+        statement.setInt(3, id);
+
+        int rowsAffected = statement.executeUpdate();
+        return rowsAffected > 0;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public String[][] listarProdutos() {
     try (Connection conexao = DriverManager.getConnection(url, usuario, senha);
         Statement statement = conexao.createStatement();
