@@ -42,7 +42,7 @@ public class gui extends javax.swing.JFrame {
 
 	}
 
-	private static String[] getProdutosCadastrados() {
+	private static String[] getProdCadastrados() {
 		Produto p = new Produto();
 		return p.get();
 	}
@@ -60,7 +60,7 @@ public class gui extends javax.swing.JFrame {
 
 	private static void selecionarClienteEData() {
 		JFrame frame = new JFrame("Seleção de Cliente e Data");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
 
 		JLabel labelCliente = new JLabel("Cliente: ");
@@ -96,7 +96,7 @@ public class gui extends javax.swing.JFrame {
 
 	private static void gerarGuiPedidos(String cliente, String data) {
 		JFrame frame = new JFrame("Pedido");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		DefaultTableModel tableModel = new DefaultTableModel() {
 			@Override
@@ -150,7 +150,7 @@ public class gui extends javax.swing.JFrame {
 			}
 		};
 
-		JComboBox<String> itemComboBox = new JComboBox<>(getProdutosCadastrados());
+		JComboBox<String> itemComboBox = new JComboBox<>(getProdCadastrados());
 		TableColumn itemColumn = table.getColumnModel().getColumn(1);
 		itemColumn.setCellEditor(new DefaultCellEditor(itemComboBox));
 
@@ -392,11 +392,11 @@ public class gui extends javax.swing.JFrame {
 		String[] colunas = { "Nome", "Rua", "Bairro", "Número", "Cidade", "Estado", "CPF", "Editar", "Excluir" };
 		DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
 
-		JTable tabelaClientes = new JTable(tableModel);
-		tabelaClientes.getColumn("Editar").setCellRenderer(new ButtonRenderer("Editar"));
-		tabelaClientes.getColumn("Editar").setCellEditor(new ButtonEditor(new JCheckBox(), tabelaClientes, "Editar"));
-		tabelaClientes.getColumn("Excluir").setCellRenderer(new ButtonRenderer("Excluir"));
-		tabelaClientes.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox(), tabelaClientes, "Excluir"));
+		JTable tClientes = new JTable(tableModel);
+		tClientes.getColumn("Editar").setCellRenderer(new ButtonRenderer("Editar"));
+		tClientes.getColumn("Editar").setCellEditor(new ButtonEditor(new JCheckBox(), tClientes, "Editar", frame));
+		tClientes.getColumn("Excluir").setCellRenderer(new ButtonRenderer("Excluir"));
+		tClientes.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox(), tClientes, "Excluir", frame));
 
 		Cliente c = new Cliente();
 
@@ -406,7 +406,7 @@ public class gui extends javax.swing.JFrame {
 			tableModel.addRow(linha);
 		}
 
-		JScrollPane scrollPane = new JScrollPane(tabelaClientes);
+		JScrollPane scrollPane = new JScrollPane(tClientes);
 		frame.add(scrollPane);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -428,7 +428,7 @@ public class gui extends javax.swing.JFrame {
 		private JTable table;
 		private String label;
 
-		public ButtonEditor(JCheckBox checkBox, JTable table, String label) {
+		public ButtonEditor(JCheckBox checkBox, JTable table, String label, JFrame frame) {
 			super(checkBox);
 			this.table = table;
 			this.label = label;
@@ -438,7 +438,7 @@ public class gui extends javax.swing.JFrame {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow >= 0) {
 					if ("Editar".equals(label)) {
-						gerarGuiEdicaoCliente(selectedRow, table);
+						gerarGuiEdicaoCliente(selectedRow, table, frame);
 					} else if ("Excluir".equals(label)) {
 						int confirm = JOptionPane.showConfirmDialog(table,
 								"Tem certeza que deseja excluir este cliente?",
@@ -450,7 +450,8 @@ public class gui extends javax.swing.JFrame {
 							int idCliente = c.getClienteID(nome);
 							if (c.delete(idCliente)) {
 								JOptionPane.showMessageDialog(table, "Cliente excluído com sucesso!");
-								((DefaultTableModel) table.getModel()).removeRow(selectedRow);
+								frame.dispose();
+								gerarGuiListarClientes();
 							} else {
 								JOptionPane.showMessageDialog(table, "Erro ao excluir cliente.");
 							}
@@ -469,12 +470,10 @@ public class gui extends javax.swing.JFrame {
 			return label;
 		}
 
-		private void gerarGuiEdicaoCliente(int rowIndex, JTable table) {
-			System.out.println("Editando cliente na linha: " + rowIndex);
-
-			JFrame janelaEdicao = new JFrame("Editar Cliente");
-			janelaEdicao.setLayout(new GridLayout(0, 2));
-			janelaEdicao.setSize(400, 400);
+		private void gerarGuiEdicaoCliente(int rowIndex, JTable table, JFrame framePai) {
+			JFrame frame = new JFrame("Editar Cliente");
+			frame.setLayout(new GridLayout(0, 2));
+			frame.setSize(600, 600);
 
 			String nome = (String) table.getValueAt(rowIndex, 0);
 			String rua = (String) table.getValueAt(rowIndex, 1);
@@ -484,33 +483,33 @@ public class gui extends javax.swing.JFrame {
 			String estado = (String) table.getValueAt(rowIndex, 5);
 			String cpf = (String) table.getValueAt(rowIndex, 6);
 
-			janelaEdicao.add(new JLabel("Nome:"));
+			frame.add(new JLabel("Nome:"));
 			JTextField nomeField = new JTextField(nome);
-			janelaEdicao.add(nomeField);
+			frame.add(nomeField);
 
-			janelaEdicao.add(new JLabel("Rua:"));
+			frame.add(new JLabel("Rua:"));
 			JTextField ruaField = new JTextField(rua);
-			janelaEdicao.add(ruaField);
+			frame.add(ruaField);
 
-			janelaEdicao.add(new JLabel("Bairro:"));
+			frame.add(new JLabel("Bairro:"));
 			JTextField bairroField = new JTextField(bairro);
-			janelaEdicao.add(bairroField);
+			frame.add(bairroField);
 
-			janelaEdicao.add(new JLabel("Número:"));
+			frame.add(new JLabel("Número:"));
 			JTextField numeroField = new JTextField(numero);
-			janelaEdicao.add(numeroField);
+			frame.add(numeroField);
 
-			janelaEdicao.add(new JLabel("Cidade:"));
+			frame.add(new JLabel("Cidade:"));
 			JTextField cidadeField = new JTextField(cidade);
-			janelaEdicao.add(cidadeField);
+			frame.add(cidadeField);
 
-			janelaEdicao.add(new JLabel("Estado:"));
+			frame.add(new JLabel("Estado:"));
 			JTextField estadoField = new JTextField(estado);
-			janelaEdicao.add(estadoField);
+			frame.add(estadoField);
 
-			janelaEdicao.add(new JLabel("CPF:"));
+			frame.add(new JLabel("CPF:"));
 			JTextField cpfField = new JTextField(cpf);
-			janelaEdicao.add(cpfField);
+			frame.add(cpfField);
 
 			JButton confirmarButton = new JButton("Confirmar");
 			confirmarButton.addActionListener(e -> {
@@ -527,17 +526,20 @@ public class gui extends javax.swing.JFrame {
 				boolean atualizado = c.update(idCliente, nNome, nRua, nBairro, nNumero, nCidade, nEstado, nCpf);
 
 				if (atualizado) {
-					JOptionPane.showMessageDialog(janelaEdicao, "Cliente atualizado com sucesso!");
+					JOptionPane.showMessageDialog(frame, "Cliente atualizado com sucesso!");
+					framePai.dispose();
+					gerarGuiListarClientes();
 				} else {
-					JOptionPane.showMessageDialog(janelaEdicao, "Erro ao atualizar cliente.");
+					JOptionPane.showMessageDialog(frame, "Erro ao atualizar cliente.");
 				}
 
-				janelaEdicao.dispose();
+				frame.dispose();
 			});
-			janelaEdicao.add(confirmarButton);
+			frame.add(confirmarButton);
 
-			janelaEdicao.pack();
-			janelaEdicao.setVisible(true);
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
 		}
 	}
 
@@ -549,13 +551,11 @@ public class gui extends javax.swing.JFrame {
 		String[] colunas = { "Nome", "Preço", "Editar", "Excluir" };
 		DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
 
-		JTable tabelaProdutos = new JTable(tableModel);
-		tabelaProdutos.getColumn("Editar").setCellRenderer(new ProdutoButtonRenderer("Editar"));
-		tabelaProdutos.getColumn("Editar")
-				.setCellEditor(new ProdutoButtonEditor(new JCheckBox(), tabelaProdutos, "Editar"));
-		tabelaProdutos.getColumn("Excluir").setCellRenderer(new ProdutoButtonRenderer("Excluir"));
-		tabelaProdutos.getColumn("Excluir")
-				.setCellEditor(new ProdutoButtonEditor(new JCheckBox(), tabelaProdutos, "Excluir"));
+		JTable tProd = new JTable(tableModel);
+		tProd.getColumn("Editar").setCellRenderer(new PButtonRenderer("Editar"));
+		tProd.getColumn("Editar").setCellEditor(new PButtonEditor(new JCheckBox(), tProd, "Editar", frame));
+		tProd.getColumn("Excluir").setCellRenderer(new PButtonRenderer("Excluir"));
+		tProd.getColumn("Excluir").setCellEditor(new PButtonEditor(new JCheckBox(), tProd, "Excluir", frame));
 
 		Produto p = new Produto();
 		String[][] dados = p.listarProdutos();
@@ -564,14 +564,14 @@ public class gui extends javax.swing.JFrame {
 			tableModel.addRow(linha);
 		}
 
-		JScrollPane scrollPane = new JScrollPane(tabelaProdutos);
+		JScrollPane scrollPane = new JScrollPane(tProd);
 		frame.add(scrollPane);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 
-	static class ProdutoButtonRenderer extends JButton implements TableCellRenderer {
-		public ProdutoButtonRenderer(String text) {
+	static class PButtonRenderer extends JButton implements TableCellRenderer {
+		public PButtonRenderer(String text) {
 			setText(text);
 		}
 
@@ -581,28 +581,40 @@ public class gui extends javax.swing.JFrame {
 		}
 	}
 
-	// Editor de botões para produtos
-	static class ProdutoButtonEditor extends DefaultCellEditor {
+	static class PButtonEditor extends DefaultCellEditor {
 		protected JButton button;
-		private String label;
 		private JTable table;
-		private boolean isPushed;
+		private String label;
 
-		public ProdutoButtonEditor(JCheckBox checkBox, JTable table, String label) {
+		public PButtonEditor(JCheckBox checkBox, JTable table, String label, JFrame frame) {
 			super(checkBox);
-			this.button = new JButton();
 			this.table = table;
 			this.label = label;
-			this.button.setOpaque(true);
-			this.button.addActionListener(e -> fireEditingStopped());
+			this.button = new JButton();
 
 			button.addActionListener(e -> {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow >= 0) {
 					if ("Editar".equals(label)) {
-						System.out.println("editar");
+						gerarGuiEdicaoProdutos(selectedRow, table, frame);
+
 					} else if ("Excluir".equals(label)) {
-						System.out.println("excluir");
+						int confirm = JOptionPane.showConfirmDialog(table,
+								"Tem certeza que deseja excluir este produto?",
+								"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION);
+
+						if (confirm == JOptionPane.YES_OPTION) {
+							String nome = (String) table.getValueAt(selectedRow, 0);
+							Produto p = new Produto();
+							int idProduto = p.getProdutoID(nome);
+							if (p.delete(idProduto)) {
+								JOptionPane.showMessageDialog(table, "Produto excluído com sucesso!");
+								frame.dispose();
+								gerarGuiListarProdutos();
+							} else {
+								JOptionPane.showMessageDialog(table, "Erro ao excluir produto.");
+							}
+						}
 					}
 				}
 			});
@@ -619,15 +631,46 @@ public class gui extends javax.swing.JFrame {
 			return label;
 		}
 
-		@Override
-		public boolean stopCellEditing() {
-			isPushed = false;
-			return super.stopCellEditing();
-		}
+		private void gerarGuiEdicaoProdutos(int rowIndex, JTable table, JFrame framePai) {
+			JFrame frame = new JFrame("Editar Produto");
+			frame.setLayout(new GridLayout(0, 2));
+			frame.setSize(600, 600);
 
-		@Override
-		protected void fireEditingStopped() {
-			super.fireEditingStopped();
+			String nome = (String) table.getValueAt(rowIndex, 0);
+			String preco = (String) table.getValueAt(rowIndex, 1);
+
+			frame.add(new JLabel("Nome:"));
+			JTextField nomeField = new JTextField(nome);
+			frame.add(nomeField);
+
+			frame.add(new JLabel("Preco:"));
+			JTextField precoField = new JTextField(preco);
+			frame.add(precoField);
+
+			JButton confirmarButton = new JButton("Confirmar");
+			confirmarButton.addActionListener(e -> {
+				String nNome = nomeField.getText();
+				String nPreco = precoField.getText();
+
+				Produto p = new Produto();
+				int idCliente = p.getProdutoID(nome);
+				boolean atualizado = p.update(idCliente, nNome, nPreco);
+
+				if (atualizado) {
+					JOptionPane.showMessageDialog(frame, "Produto atualizado com sucesso!");
+					framePai.dispose();
+					gerarGuiListarProdutos();
+				} else {
+					JOptionPane.showMessageDialog(frame, "Erro ao atualizar produto.");
+				}
+
+				frame.dispose();
+			});
+			frame.add(confirmarButton);
+
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
 		}
 	}
 
