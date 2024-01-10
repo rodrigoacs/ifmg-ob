@@ -171,7 +171,8 @@ public class guiPedido extends javax.swing.JFrame {
     tableModel.addTableModelListener(new TableModelListener() {
       @Override
       public void tableChanged(TableModelEvent e) {
-        totalTextField.setText(String.format("%.2f", calculaTotal(tableModel, ClientePrime.getDesconto(id))));
+        totalTextField.setText(String.format("%.2f",
+            calculaTotal(tableModel, ClientePrime.getDesconto(id), freteTextField.getText())));
       }
     });
 
@@ -179,7 +180,8 @@ public class guiPedido extends javax.swing.JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         int id = new Cliente().getId(cliente);
-        Pedido p = new Pedido(id, data, calculaTotal(tableModel, ClientePrime.getDesconto(id)));
+        Pedido p = new Pedido(id, data,
+            calculaTotal(tableModel, ClientePrime.getDesconto(id), freteTextField.getText()));
         int idPedido = p.insert(p);
         p.insertItens(getItens(tableModel), idPedido);
         if (idPedido != -1) {
@@ -233,8 +235,13 @@ public class guiPedido extends javax.swing.JFrame {
     return itensPedido;
   }
 
-  public static double calculaTotal(DefaultTableModel tableModel, Double desconto) {
+  public static double calculaTotal(DefaultTableModel tableModel, Double desconto, String frete) {
     double total = 0.0;
+    double valorFrete = 0.0;
+    if (!frete.isBlank()) {
+      valorFrete = Double.parseDouble(frete);
+    }
+
     for (int i = 0; i < tableModel.getRowCount(); i++) {
       Integer quantidade = (Integer) tableModel.getValueAt(i, 0);
       Double preco = (Double) tableModel.getValueAt(i, 2);
@@ -243,7 +250,7 @@ public class guiPedido extends javax.swing.JFrame {
         total += quantidade * preco;
       }
     }
-    total = total - (total * (desconto / 100));
+    total = total - (total * (desconto / 100)) + valorFrete;
     return total;
   }
 
