@@ -4,16 +4,11 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
-
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 public class Pedido implements DB<Pedido> {
-  int idCliente;
-  String dataPedido;
-  Double total;
+  protected int idCliente;
+  protected String dataPedido;
+  protected Double total;
 
   public int getIdCliente() {
     return idCliente;
@@ -43,6 +38,9 @@ public class Pedido implements DB<Pedido> {
     this.idCliente = idCliente;
     this.dataPedido = dataPedido;
     this.total = total;
+  }
+
+  public Pedido() {
   }
 
   @Override
@@ -96,7 +94,7 @@ public class Pedido implements DB<Pedido> {
         String sql = "INSERT INTO itens_pedido (id_pedido, id_produto, quantidade) VALUES (?, ?, ?)";
         try (PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
           statement.setInt(1, idPedido);
-          statement.setInt(2, produto.getProdutoID(produto.getNome()));
+          statement.setInt(2, produto.getId(produto.getNome()));
           statement.setInt(3, produto.getQuantidade());
 
           int rowsAffected = statement.executeUpdate();
@@ -112,6 +110,67 @@ public class Pedido implements DB<Pedido> {
     }
 
     return true;
+  }
+
+  @Override
+  public boolean delete(int id) {
+    throw new UnsupportedOperationException("Unimplemented method 'delete'");
+  }
+
+  @Override
+  public int getId(String nome) {
+    throw new UnsupportedOperationException("Unimplemented method 'getId'");
+  }
+
+  public String[][] listarPedidos() {
+    try (Connection conexao = DriverManager.getConnection(url, usuario, senha);
+        Statement statement = conexao.createStatement();
+        ResultSet resultSet = statement
+            .executeQuery(
+                "select p.id, c.nome, p.data_pedido, p.total from pedidos p join clientes c on p.id_cliente = c.id ")) {
+
+      ArrayList<String[]> lista = new ArrayList<>();
+      while (resultSet.next()) {
+        String id = Integer.toString(resultSet.getInt("id"));
+        String nome = resultSet.getString("nome");
+        String dataPedido = resultSet.getString("data_pedido");
+        String total = Double.toString(resultSet.getDouble("total"));
+
+        lista.add(new String[] { id, nome, dataPedido, total });
+      }
+
+      return lista.toArray(new String[0][]);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return new String[0][0];
+    }
+
+  }
+
+  public static String[][] getDetalhesPedido(String pedidoId) {
+    try (Connection conexao = DriverManager.getConnection(url, usuario, senha);
+        Statement statement = conexao.createStatement();
+        ResultSet resultSet = statement.executeQuery(
+            "SELECT ip.quantidade, p.nome, p.preco, (p.preco * ip.quantidade) AS total " +
+                "FROM itens_pedido ip " +
+                "JOIN produtos p ON ip.id_produto = p.id " +
+                "WHERE ip.id_pedido = '" + pedidoId + "'")) {
+
+      ArrayList<String[]> lista = new ArrayList<>();
+      while (resultSet.next()) {
+        String quantidade = Integer.toString(resultSet.getInt("quantidade"));
+        String nomeProduto = resultSet.getString("nome");
+        String preco = Double.toString(resultSet.getDouble("preco"));
+        String total = Double.toString(resultSet.getDouble("total"));
+
+        lista.add(new String[] { quantidade, nomeProduto, preco, total });
+      }
+
+      return lista.toArray(new String[0][]);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return new String[0][0];
+    }
   }
 
 }

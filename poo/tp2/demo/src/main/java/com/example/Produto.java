@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 public class Produto implements DB<Produto> {
 
-  String nome;
-  int quantidade;
-  Double preco;
+  protected String nome;
+  protected int quantidade;
+  protected Double preco;
 
   public String getNome() {
     return nome;
@@ -179,7 +179,7 @@ public class Produto implements DB<Produto> {
     return preco;
   }
 
-  public int getProdutoID(String nome) {
+  public int getId(String nome) {
     int id = 0;
     try (Connection conexao = DriverManager.getConnection(url, usuario, senha)) {
       String sql = "SELECT id FROM produtos WHERE nome = '" + nome + "'";

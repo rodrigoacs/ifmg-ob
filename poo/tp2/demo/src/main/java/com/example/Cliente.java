@@ -8,33 +8,32 @@ import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Cliente implements DB<Cliente> {
+public class Cliente extends Usuario implements DB<Cliente> {
 
-  String nome;
-  String rua;
-  String bairro;
-  String numero;
-  String cidade;
-  String estado;
-  String cpf;
+  protected String nome;
+  protected String rua;
+  protected String bairro;
+  protected String numero;
+  protected String cidade;
+  protected String estado;
 
   public Cliente() {
 
   }
 
   public Cliente(String nome, String rua, String bairro, String numero, String cidade, String estado, String cpf) {
+    super(cpf);
     this.nome = nome;
     this.rua = rua;
     this.bairro = bairro;
     this.numero = numero;
     this.cidade = cidade;
     this.estado = estado;
-    this.cpf = cpf;
   }
 
   @Override
   public int insert(Cliente c) {
-    String sql = "INSERT INTO clientes (nome, rua, bairro, numero, cidade, estado, cpf) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO clientes (nome, rua, bairro, numero, cidade, estado, cpf, prime) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (Connection conexao = DriverManager.getConnection(url, usuario, senha);) {
       PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -45,6 +44,7 @@ public class Cliente implements DB<Cliente> {
       statement.setString(5, c.cidade);
       statement.setString(6, c.estado);
       statement.setString(7, c.cpf);
+      statement.setBoolean(8, false);
 
       int rowsAffected = statement.executeUpdate();
       if (rowsAffected == 0) {
@@ -53,14 +53,14 @@ public class Cliente implements DB<Cliente> {
 
       try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
         if (generatedKeys.next()) {
-          return generatedKeys.getInt(1); // Retorna o ID gerado
+          return generatedKeys.getInt(1);
         } else {
           throw new SQLException("Falha ao obter o ID do cliente.");
         }
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      return -1; // Indica falha
+      return -1;
     }
   }
 
@@ -99,10 +99,11 @@ public class Cliente implements DB<Cliente> {
     return clientes;
   }
 
-  public boolean update(int id, String nome, String rua, String bairro, String numero, String cidade, String estado,
+  public static boolean update(int id, String nome, String rua, String bairro, String numero, String cidade,
+      String estado,
       String cpf) {
     try (Connection conexao = DriverManager.getConnection(url, usuario, senha)) {
-      String sql = "UPDATE clientes SET nome = ?, rua = ?, bairro = ?, numero = ?, cidade = ?, estado = ?, cpf = ? WHERE id = ?";
+      String sql = "UPDATE clientes SET nome = ?, rua = ?, bairro = ?, numero = ?, cidade = ?, estado = ?, cpf = ?, desconto = 0.0 WHERE id = ?";
       try (PreparedStatement statement = conexao.prepareStatement(sql)) {
         statement.setString(1, nome);
         statement.setString(2, rua);
@@ -137,7 +138,7 @@ public class Cliente implements DB<Cliente> {
     }
   }
 
-  public int getClienteID(String nome) {
+  public int getId(String nome) {
     int id = 0;
     try (Connection conexao = DriverManager.getConnection(url, usuario, senha)) {
       String sql = "SELECT id FROM clientes WHERE nome = '" + nome + "'";
@@ -179,7 +180,25 @@ public class Cliente implements DB<Cliente> {
       e.printStackTrace();
       return new String[0][0];
     }
+  }
 
+  public static boolean verificaPrime(int id) {
+
+    boolean desconto = false;
+    try (Connection conexao = DriverManager.getConnection(url, usuario, senha)) {
+      String sql = "SELECT prime FROM clientes WHERE id = '" + id + "'";
+
+      try (PreparedStatement statement = conexao.prepareStatement(sql)) {
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+          desconto = resultSet.getBoolean("prime");
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return desconto;
   }
 
 }
