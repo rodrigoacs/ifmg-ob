@@ -76,7 +76,7 @@ public class guiProduto extends javax.swing.JFrame {
     JTable tProd = new JTable(tableModel) {
       @Override
       public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
+        return columnIndex == 2 || columnIndex == 3;
       }
     };
     tProd.getColumn("Editar").setCellRenderer(new ButtonRenderer("Editar"));

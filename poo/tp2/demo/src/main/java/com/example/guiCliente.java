@@ -138,7 +138,7 @@ public class guiCliente extends javax.swing.JFrame {
     JTable tClientes = new JTable(tableModel) {
       @Override
       public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
+        return columnIndex == 7 || columnIndex == 8;
       }
     };
 

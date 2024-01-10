@@ -1,5 +1,9 @@
 package com.example;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
@@ -10,6 +14,12 @@ import com.formdev.flatlaf.FlatLightLaf;
 public class gui extends javax.swing.JFrame {
 
 	public gui() {
+		setTitle("Super Vendas");
+		try {
+			setIconImage(ImageIO.read(new File("./src/main/resources/icon.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		initComponents();
 	}
 
