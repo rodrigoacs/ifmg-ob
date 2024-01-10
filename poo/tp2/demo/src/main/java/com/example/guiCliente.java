@@ -1,5 +1,6 @@
 package com.example;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -27,7 +28,7 @@ public class guiCliente extends javax.swing.JFrame {
     JFrame frame = new JFrame("Cadastrar Cliente");
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setLayout(null);
-    frame.setSize(400, 500);
+    frame.setSize(360, 440);
     frame.setLocationRelativeTo(null);
 
     JLabel nomeLabel = new JLabel("Nome:");
@@ -80,6 +81,7 @@ public class guiCliente extends javax.swing.JFrame {
     cadastrarButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+
         String nome = nomeField.getText();
         String rua = ruaField.getText();
         String bairro = bairroField.getText();
@@ -87,20 +89,26 @@ public class guiCliente extends javax.swing.JFrame {
         String cidade = cidadeField.getText();
         String estado = estadoField.getText();
         String cpf = cpfField.getText();
-        Double desconto = Double.parseDouble(descontoField.getText());
+        String desconto = descontoField.getText();
 
-        if (primeField.isSelected()) {
-          ClientePrime cp = new ClientePrime(nome, rua, bairro, numero, cidade, estado, cpf, desconto);
-          cp.insert(cp);
+        if (nome.isBlank() || rua.isBlank() || bairro.isBlank() || numero.isBlank() || cidade.isBlank()
+            || estado.isBlank() || cpf.isBlank() || desconto.isBlank()) {
+          JOptionPane.showMessageDialog(frame, "Erro na criação do cliente! Preencha todos os dados.");
         } else {
-          Cliente c = new Cliente(nome, rua, bairro, numero, cidade, estado, cpf);
-          c.insert(c);
-        }
+          if (primeField.isSelected()) {
+            ClientePrime cp = new ClientePrime(nome, rua, bairro, numero, cidade, estado, cpf,
+                Double.parseDouble(desconto));
+            cp.insert(cp);
+          } else {
+            Cliente c = new Cliente(nome, rua, bairro, numero, cidade, estado, cpf);
+            c.insert(c);
+          }
 
-        JOptionPane.showMessageDialog(frame, "Cliente cadastrado:\nNome: " + nome
-            + "\nRua: " + rua + "\nBairro: " + bairro + "\nNúmero: " + numero
-            + "\nCidade: " + cidade + "\nEstado: " + estado + "\nCPF: " + cpf);
-        frame.dispose();
+          JOptionPane.showMessageDialog(frame, "Cliente cadastrado:\nNome: " + nome
+              + "\nRua: " + rua + "\nBairro: " + bairro + "\nNúmero: " + numero
+              + "\nCidade: " + cidade + "\nEstado: " + estado + "\nCPF: " + cpf);
+          frame.dispose();
+        }
       }
     });
 
@@ -130,15 +138,24 @@ public class guiCliente extends javax.swing.JFrame {
   public static void gerarGuiListarClientes() {
     JFrame frame = new JFrame("Listar Clientes");
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    frame.setSize(1000, 1000);
+    frame.setSize(1600, 1000);
 
-    String[] colunas = { "Nome", "Rua", "Bairro", "Número", "Cidade", "Estado", "CPF", "Editar", "Excluir" };
+    String[] colunas = { "Prime", "Nome", "Rua", "Bairro", "Número", "Cidade", "Estado", "CPF", "Editar", "Excluir" };
     DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
 
     JTable tClientes = new JTable(tableModel) {
       @Override
       public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 7 || columnIndex == 8;
+        return columnIndex == 8 || columnIndex == 9;
+      }
+
+      @Override
+      public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+        Component component = super.prepareRenderer(renderer, row, column);
+        if (!isRowSelected(row)) {
+          component.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+        }
+        return component;
       }
     };
 
@@ -223,13 +240,13 @@ public class guiCliente extends javax.swing.JFrame {
       frame.setLayout(new GridLayout(0, 2));
       frame.setSize(600, 600);
 
-      String nome = (String) table.getValueAt(rowIndex, 0);
-      String rua = (String) table.getValueAt(rowIndex, 1);
-      String bairro = (String) table.getValueAt(rowIndex, 2);
-      String numero = (String) table.getValueAt(rowIndex, 3);
-      String cidade = (String) table.getValueAt(rowIndex, 4);
-      String estado = (String) table.getValueAt(rowIndex, 5);
-      String cpf = (String) table.getValueAt(rowIndex, 6);
+      String nome = (String) table.getValueAt(rowIndex, 1);
+      String rua = (String) table.getValueAt(rowIndex, 2);
+      String bairro = (String) table.getValueAt(rowIndex, 3);
+      String numero = (String) table.getValueAt(rowIndex, 4);
+      String cidade = (String) table.getValueAt(rowIndex, 5);
+      String estado = (String) table.getValueAt(rowIndex, 6);
+      String cpf = (String) table.getValueAt(rowIndex, 7);
 
       frame.add(new JLabel("Nome:"));
       JTextField nomeField = new JTextField(nome);

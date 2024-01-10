@@ -160,10 +160,12 @@ public class Cliente extends Usuario implements DB<Cliente> {
     try (Connection conexao = DriverManager.getConnection(url, usuario, senha);
         Statement statement = conexao.createStatement();
         ResultSet resultSet = statement
-            .executeQuery("SELECT nome, rua, bairro, numero, cidade, estado, cpf FROM clientes WHERE ativo = true")) {
+            .executeQuery(
+                "SELECT case when prime = 1 then 'sim' else 'nao' end as prime, nome, rua, bairro, numero, cidade, estado, cpf FROM clientes WHERE ativo = true")) {
 
       ArrayList<String[]> lista = new ArrayList<>();
       while (resultSet.next()) {
+        String prime = resultSet.getString("prime");
         String nome = resultSet.getString("nome");
         String rua = resultSet.getString("rua");
         String bairro = resultSet.getString("bairro");
@@ -172,7 +174,7 @@ public class Cliente extends Usuario implements DB<Cliente> {
         String estado = resultSet.getString("estado");
         String cpf = resultSet.getString("cpf");
 
-        lista.add(new String[] { nome, rua, bairro, numero, cidade, estado, cpf });
+        lista.add(new String[] { prime, nome, rua, bairro, numero, cidade, estado, cpf });
       }
 
       return lista.toArray(new String[0][]);
