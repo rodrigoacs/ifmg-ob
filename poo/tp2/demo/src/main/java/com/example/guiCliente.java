@@ -141,7 +141,7 @@ public class guiCliente extends javax.swing.JFrame {
         return false;
       }
     };
-    ;
+
     tClientes.getColumn("Editar").setCellRenderer(new ButtonRenderer("Editar"));
     tClientes.getColumn("Editar").setCellEditor(new ButtonEditor(new JCheckBox(), tClientes, "Editar", frame));
     tClientes.getColumn("Excluir").setCellRenderer(new ButtonRenderer("Excluir"));
