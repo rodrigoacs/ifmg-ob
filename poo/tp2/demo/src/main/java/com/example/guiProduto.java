@@ -1,5 +1,6 @@
 package com.example;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -27,7 +28,7 @@ public class guiProduto extends javax.swing.JFrame {
     JFrame frame = new JFrame("Cadastrar Produto");
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setLayout(null);
-    frame.setSize(400, 400);
+    frame.setSize(360, 240);
     frame.setLocationRelativeTo(null);
 
     JLabel nomeLabel = new JLabel("Nome:");
@@ -46,14 +47,18 @@ public class guiProduto extends javax.swing.JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         String nome = nomeField.getText();
-        Double preco = Double.parseDouble(precoField.getText());
+        String preco = precoField.getText();
 
-        Produto p = new Produto(nome, preco);
-        p.insert(p);
+        if (nome.isBlank() || preco.isBlank()) {
+          JOptionPane.showMessageDialog(frame, "Erro na criação do produto! Preencha todos os campos.");
+        } else {
+          Produto p = new Produto(nome, Double.parseDouble(preco));
+          p.insert(p);
 
-        JOptionPane.showMessageDialog(frame, "Produto cadastrado:\nNome: "
-            + nome + "\nPreço: " + preco);
-        frame.dispose();
+          JOptionPane.showMessageDialog(frame, "Produto cadastrado:\nNome: "
+              + nome + "\nPreço: " + preco);
+          frame.dispose();
+        }
       }
     });
 
@@ -78,6 +83,16 @@ public class guiProduto extends javax.swing.JFrame {
       public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex == 2 || columnIndex == 3;
       }
+
+      @Override
+      public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+        Component component = super.prepareRenderer(renderer, row, column);
+        if (!isRowSelected(row)) {
+          component.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+        }
+        return component;
+      }
+
     };
     tProd.getColumn("Editar").setCellRenderer(new ButtonRenderer("Editar"));
     tProd.getColumn("Editar").setCellEditor(new ButtonEditor(new JCheckBox(), tProd, "Editar", frame));

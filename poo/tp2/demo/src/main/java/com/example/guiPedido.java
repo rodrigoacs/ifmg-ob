@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -127,7 +129,7 @@ public class guiPedido extends javax.swing.JFrame {
       public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component component = super.prepareRenderer(renderer, row, column);
         if (!isRowSelected(row)) {
-          component.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.GRAY);
+          component.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
         }
         return component;
       }
@@ -180,17 +182,20 @@ public class guiPedido extends javax.swing.JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         int id = new Cliente().getId(cliente);
-        Pedido p = new Pedido(id, data,
-            calculaTotal(tableModel, ClientePrime.getDesconto(id), freteTextField.getText()));
-        int idPedido = p.insert(p);
-        p.insertItens(getItens(tableModel), idPedido);
-        if (idPedido != -1) {
-          JOptionPane.showMessageDialog(frame, "Pedido criado com sucesso!");
+        if (calculaTotal(tableModel, ClientePrime.getDesconto(id), freteTextField.getText()) == 0.0) {
+          JOptionPane.showMessageDialog(frame, "Erro na criação do pedido! Não é possível criar um pedido vazio.");
         } else {
-          JOptionPane.showMessageDialog(frame, "Erro na criação do pedido! Tente novamente.");
+          Pedido p = new Pedido(id, data,
+              calculaTotal(tableModel, ClientePrime.getDesconto(id), freteTextField.getText()));
+          int idPedido = p.insert(p);
+          p.insertItens(getItens(tableModel), idPedido);
+          if (idPedido != -1) {
+            JOptionPane.showMessageDialog(frame, "Pedido criado com sucesso!");
+          } else {
+            JOptionPane.showMessageDialog(frame, "Erro na criação do pedido! Tente novamente.");
+          }
+          frame.dispose();
         }
-
-        frame.dispose();
       }
     });
 
@@ -272,6 +277,15 @@ public class guiPedido extends javax.swing.JFrame {
       public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex == 4;
       }
+
+      @Override
+      public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+        Component component = super.prepareRenderer(renderer, row, column);
+        if (!isRowSelected(row)) {
+          component.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+        }
+        return component;
+      }
     };
 
     tPed.getColumn("Detalhes").setCellRenderer(new ButtonRenderer("Detalhes"));
@@ -345,6 +359,15 @@ public class guiPedido extends javax.swing.JFrame {
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
           return false;
+        }
+
+        @Override
+        public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+          Component component = super.prepareRenderer(renderer, row, column);
+          if (!isRowSelected(row)) {
+            component.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+          }
+          return component;
         }
       };
 
