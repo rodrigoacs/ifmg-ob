@@ -46,7 +46,7 @@ public class Receptor {
 
     // aqui você deve trocar o médodo decofificarDado para decoficarDadoCRC
     // (implemente!!)
-    decodificarDadoCRC(bits);
+    // decodificarDadoCRC(bits);
 
     // será que sempre teremos sucesso nessa recepção
     return true;
