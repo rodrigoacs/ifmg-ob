@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Transmissor {
   private String mensagem;
+  final boolean POLINOMIO[] = { true, false, false, true, true }; // 10011
 
   public Transmissor(String mensagem) {
     this.mensagem = mensagem;
@@ -43,13 +44,33 @@ public class Transmissor {
   }
 
   private boolean[] dadoBitsCRC(boolean bits[]) {
+    boolean[] bitsCRC = new boolean[bits.length + POLINOMIO.length - 1];
+    System.arraycopy(bits, 0, bitsCRC, 0, bits.length);
 
-    /*
-     * sua implementação aqui!!!
-     * modifique o que precisar neste método
-     */
+    System.out.println("Bits: ");
+    for (boolean b : bitsCRC) {
+      System.out.print(b ? 1 : 0);
+    }
 
-    return bits;
+    for (int i = 0; i < bits.length; i++) {
+      if (bitsCRC[i]) {
+        for (int j = 0; j < POLINOMIO.length; j++) {
+          bitsCRC[i + j] = bitsCRC[i + j] ^ POLINOMIO[j];
+        }
+      } else {
+        for (int j = 0; j < POLINOMIO.length; j++) {
+          bitsCRC[i + j] = bitsCRC[i + j] ^ false;
+        }
+      }
+    }
+
+    System.out.println("\nBits CRC: ");
+    for (boolean b : bitsCRC) {
+      System.out.print(b ? 1 : 0);
+    }
+
+    return bitsCRC;
+
   }
 
   public void enviaDado(Receptor receptor) {
@@ -58,8 +79,8 @@ public class Transmissor {
 
       /*-------AQUI você deve adicionar os bits do códico CRC para contornar os problemas de ruidos
                   você pode modificar o método anterior também
-          boolean bitsCRC[] = dadoBitsCRC(bits);
-      */
+                  */
+      boolean bitsCRC[] = dadoBitsCRC(bits);
 
       // add ruidos na mensagem a ser enviada para o receptor
       geradorRuido(bits);
