@@ -47,7 +47,7 @@ public class Transmissor {
     boolean[] bitsCRC = new boolean[bits.length + POLINOMIO.length - 1];
     System.arraycopy(bits, 0, bitsCRC, 0, bits.length);
 
-    System.out.println("Bits: ");
+    System.out.println("Bits Originais: ");
     for (boolean b : bitsCRC) {
       System.out.print(b ? 1 : 0);
     }
