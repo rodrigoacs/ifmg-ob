@@ -52,12 +52,24 @@ public class Transmissor {
       System.out.print(b ? 1 : 0);
     }
 
+    System.out.println("\nPolinomio: ");
+    for (boolean b : POLINOMIO) {
+      System.out.print(b ? 1 : 0);
+    }
+
+    System.out.println("\nBits CRC: ");
     for (boolean b : bitsCRC) {
-      if (b) {
-        for (int i = 0; i < POLINOMIO.length; i++) {
-          bitsCRC[i] ^= POLINOMIO[i];
-          System.out.print(bitsCRC[i] ? 1 : 0);
-          System.out.println(POLINOMIO[i] ? 1 : 0);
+      System.out.print(b ? 1 : 0);
+    }
+
+    for (int i = 0; i < bits.length; i++) {
+      if (bitsCRC[i]) {
+        for (int j = 0; j < POLINOMIO.length; j++) {
+          bitsCRC[i + j] ^= POLINOMIO[j];
+        }
+      } else {
+        for (int j = 0; j < POLINOMIO.length; j++) {
+          bitsCRC[i + j] ^= false;
         }
       }
     }
@@ -65,7 +77,7 @@ public class Transmissor {
     boolean[] bitsFinais = new boolean[POLINOMIO.length - 1];
     System.arraycopy(bitsCRC, bitsCRC.length - (POLINOMIO.length - 1), bitsFinais, 0, POLINOMIO.length - 1);
 
-    System.out.println("\nBits CRC: ");
+    System.out.println("\nBits Finais CRC: ");
     for (boolean b : bitsFinais) {
       System.out.print(b ? 1 : 0);
     }
