@@ -47,22 +47,15 @@ public class Transmissor {
     boolean[] bitsCRC = new boolean[bits.length + POLINOMIO.length - 1];
     System.arraycopy(bits, 0, bitsCRC, 0, bits.length);
 
-    System.out.println("Bits Originais: ");
-    for (boolean b : bits) {
-      System.out.print(b ? 1 : 0);
+    // na primeira vez o polinômio sempre será aplicado
+    for (int i = 0; i < POLINOMIO.length; i++) {
+      bitsCRC[i] ^= POLINOMIO[i];
     }
 
-    System.out.println("\nPolinomio: ");
-    for (boolean b : POLINOMIO) {
-      System.out.print(b ? 1 : 0);
-    }
-
-    System.out.println("\nBits CRC: ");
-    for (boolean b : bitsCRC) {
-      System.out.print(b ? 1 : 0);
-    }
-
-    for (int i = 0; i < bits.length; i++) {
+    // aplicando o polinômio para os demais bits
+    // se o bit for 1, aplicamos o polinômio
+    // se o bit for 0, não aplicamos o polinômio
+    for (int i = 1; i < bits.length; i++) {
       if (bitsCRC[i]) {
         for (int j = 0; j < POLINOMIO.length; j++) {
           bitsCRC[i + j] ^= POLINOMIO[j];
@@ -74,34 +67,34 @@ public class Transmissor {
       }
     }
 
+    // pegando os bits finais (CRC)
     boolean[] bitsFinais = new boolean[POLINOMIO.length - 1];
     System.arraycopy(bitsCRC, bitsCRC.length - (POLINOMIO.length - 1), bitsFinais, 0, POLINOMIO.length - 1);
 
-    System.out.println("\nBits Finais CRC: ");
-    for (boolean b : bitsFinais) {
-      System.out.print(b ? 1 : 0);
-    }
-
-    return bitsCRC;
+    return bitsFinais;
   }
 
   public void enviaDado(Receptor receptor) {
     for (int i = 0; i < this.mensagem.length(); i++) {
       boolean bits[] = streamCaracter(this.mensagem.charAt(i));
-
-      /*-------AQUI você deve adicionar os bits do códico CRC para contornar os problemas de ruidos
-                  você pode modificar o método anterior também
-                  */
       boolean bitsCRC[] = dadoBitsCRC(bits);
 
-      // add ruidos na mensagem a ser enviada para o receptor
       geradorRuido(bits);
 
-      // enviando a mensagem "pela rede" para o receptor (uma forma de testarmos esse
-      // método)
-      boolean indicadorCRC = receptor.receberDadoBits(bits);
-      // o que faremos com o indicador quando houver algum erro? qual ação vamos tomar
-      // com o retorno do receptor
+      boolean[] combinedBits = new boolean[bits.length + bitsCRC.length];
+      System.arraycopy(bits, 0, combinedBits, 0, bits.length);
+      System.arraycopy(bitsCRC, 0, combinedBits, bits.length, bitsCRC.length);
+
+      boolean indicadorCRC = receptor.receberDadoBits(combinedBits);
+      while (!indicadorCRC) {
+        System.out.println("Houve um erro na transmissão, reenviando...");
+        bitsCRC = dadoBitsCRC(bits);
+        combinedBits = new boolean[bits.length + bitsCRC.length];
+        System.arraycopy(bits, 0, combinedBits, 0, bits.length);
+        System.arraycopy(bitsCRC, 0, combinedBits, bits.length, bitsCRC.length);
+        indicadorCRC = receptor.receberDadoBits(combinedBits);
+      }
     }
   }
+
 }
