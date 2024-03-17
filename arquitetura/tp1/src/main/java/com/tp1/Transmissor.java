@@ -48,29 +48,29 @@ public class Transmissor {
     System.arraycopy(bits, 0, bitsCRC, 0, bits.length);
 
     System.out.println("Bits Originais: ");
-    for (boolean b : bitsCRC) {
+    for (boolean b : bits) {
       System.out.print(b ? 1 : 0);
     }
 
-    for (int i = 0; i < bits.length; i++) {
-      if (bitsCRC[i]) {
-        for (int j = 0; j < POLINOMIO.length; j++) {
-          bitsCRC[i + j] = bitsCRC[i + j] ^ POLINOMIO[j];
-        }
-      } else {
-        for (int j = 0; j < POLINOMIO.length; j++) {
-          bitsCRC[i + j] = bitsCRC[i + j] ^ false;
+    for (boolean b : bitsCRC) {
+      if (b) {
+        for (int i = 0; i < POLINOMIO.length; i++) {
+          bitsCRC[i] ^= POLINOMIO[i];
+          System.out.println(bitsCRC[i] ? 1 : 0);
+          System.out.println(POLINOMIO[i] ? 1 : 0);
         }
       }
     }
 
+    boolean[] bitsFinais = new boolean[POLINOMIO.length - 1];
+    System.arraycopy(bitsCRC, bitsCRC.length - (POLINOMIO.length - 1), bitsFinais, 0, POLINOMIO.length - 1);
+
     System.out.println("\nBits CRC: ");
-    for (boolean b : bitsCRC) {
+    for (boolean b : bitsFinais) {
       System.out.print(b ? 1 : 0);
     }
 
     return bitsCRC;
-
   }
 
   public void enviaDado(Receptor receptor) {
