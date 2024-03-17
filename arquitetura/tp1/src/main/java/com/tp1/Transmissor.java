@@ -56,7 +56,7 @@ public class Transmissor {
       if (b) {
         for (int i = 0; i < POLINOMIO.length; i++) {
           bitsCRC[i] ^= POLINOMIO[i];
-          System.out.println(bitsCRC[i] ? 1 : 0);
+          System.out.print(bitsCRC[i] ? 1 : 0);
           System.out.println(POLINOMIO[i] ? 1 : 0);
         }
       }
