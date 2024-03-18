@@ -34,39 +34,22 @@ public class Receptor {
     return true;
   }
 
-  private boolean verificaErro(boolean bits[]) {
-    boolean POLINOMIO[] = { true, false, false, true, true }; // 10011
+  private boolean verificaErro(boolean bits[], boolean polinomio[]) {
     boolean[] bitsCRC = new boolean[bits.length];
     System.arraycopy(bits, 0, bitsCRC, 0, bits.length);
 
     // é repetida a operação realizada no Transmissor
-    for (int i = 0; i < bits.length - (POLINOMIO.length - 1); i++) {
+    for (int i = 0; i < bits.length - (polinomio.length - 1); i++) {
       if (bitsCRC[i]) {
-        for (int j = 0; j < POLINOMIO.length; j++) {
-          bitsCRC[i + j] ^= POLINOMIO[j];
-        }
-      } else {
-        for (int j = 0; j < POLINOMIO.length; j++) {
-          bitsCRC[i + j] ^= false;
+        for (int j = 0; j < polinomio.length; j++) {
+          bitsCRC[i + j] ^= polinomio[j];
         }
       }
     }
 
     // pegando os bits finais (CRC)
-    boolean[] bitsFinais = new boolean[POLINOMIO.length - 1];
-    System.arraycopy(bitsCRC, bitsCRC.length - (POLINOMIO.length - 1), bitsFinais, 0, POLINOMIO.length - 1);
-
-    System.out.print("BT");
-    for (int i = 0; i < bits.length; i++) {
-      System.out.print(bits[i] ? "1" : "0");
-    }
-    System.out.println();
-
-    System.out.print("BC");
-    for (int i = 0; i < bitsCRC.length; i++) {
-      System.out.print(bitsCRC[i] ? "1" : "0");
-    }
-    System.out.println();
+    boolean[] bitsFinais = new boolean[polinomio.length - 1];
+    System.arraycopy(bitsCRC, bitsCRC.length - (polinomio.length - 1), bitsFinais, 0, polinomio.length - 1);
 
     // verificando se o dado está correto, se os bits finais são todos falsos (0)
     for (int i = 0; i < bitsFinais.length; i++) {
@@ -77,21 +60,18 @@ public class Receptor {
     return false;
   }
 
-  private boolean decodificarDadoCRC(boolean bits[]) {
-    if (verificaErro(bits))
+  private boolean decodificarDadoCRC(boolean bits[], boolean polinomio[]) {
+    if (verificaErro(bits, polinomio))
       return false;
 
-    boolean[] bitsSemCRC = new boolean[bits.length - 4];
+    boolean[] bitsSemCRC = new boolean[bits.length - (polinomio.length - 1)];
     System.arraycopy(bits, 0, bitsSemCRC, 0, bitsSemCRC.length);
     decodificarDado(bitsSemCRC);
     return true;
   }
 
   // recebe os dados do transmissor
-  public boolean receberDadoBits(boolean bits[]) {
-    if (decodificarDadoCRC(bits)) {
-      return true;
-    }
-    return false;
+  public boolean receberDadoBits(boolean bits[], boolean polinomio[]) {
+    return decodificarDadoCRC(bits, polinomio);
   }
 }
