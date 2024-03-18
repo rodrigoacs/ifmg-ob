@@ -56,18 +56,6 @@ public class Receptor {
     boolean[] bitsFinais = new boolean[POLINOMIO.length - 1];
     System.arraycopy(bitsCRC, bitsCRC.length - (POLINOMIO.length - 1), bitsFinais, 0, POLINOMIO.length - 1);
 
-    System.out.print("BT");
-    for (int i = 0; i < bits.length; i++) {
-      System.out.print(bits[i] ? "1" : "0");
-    }
-    System.out.println();
-
-    System.out.print("BC");
-    for (int i = 0; i < bitsCRC.length; i++) {
-      System.out.print(bitsCRC[i] ? "1" : "0");
-    }
-    System.out.println();
-
     // verificando se o dado está correto, se os bits finais são todos falsos (0)
     for (int i = 0; i < bitsFinais.length; i++) {
       if (bitsFinais[i]) {
