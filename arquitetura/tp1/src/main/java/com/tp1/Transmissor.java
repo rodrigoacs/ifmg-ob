@@ -66,11 +66,6 @@ public class Transmissor {
     boolean[] bitsFinais = new boolean[POLINOMIO.length - 1];
     System.arraycopy(bitsCRC, bitsCRC.length - (POLINOMIO.length - 1), bitsFinais, 0, POLINOMIO.length - 1);
 
-    System.out.print("BF");
-    for (int i = 0; i < bitsCRC.length; i++) {
-      System.out.print(bitsCRC[i] ? "1" : "0");
-    }
-
     return bitsFinais;
   }
 
@@ -84,17 +79,6 @@ public class Transmissor {
 
       boolean indicadorCRC;
       do {
-        System.out.print("TL");
-        for (int j = 0; j < bits.length; j++) {
-          System.out.print(bits[j] ? "1" : "0");
-        }
-        System.out.println();
-        geradorRuido(bits);
-        System.out.print("TR");
-        for (int j = 0; j < bits.length; j++) {
-          System.out.print(bits[j] ? "1" : "0");
-        }
-        System.out.println();
         boolean[] combinedBits = new boolean[bits.length + bitsCRC.length];
         System.arraycopy(bits, 0, combinedBits, 0, bits.length);
         System.arraycopy(bitsCRC, 0, combinedBits, bits.length, bitsCRC.length);
