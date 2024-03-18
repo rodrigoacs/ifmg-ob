@@ -47,15 +47,10 @@ public class Transmissor {
     boolean[] bitsCRC = new boolean[bits.length + POLINOMIO.length - 1];
     System.arraycopy(bits, 0, bitsCRC, 0, bits.length);
 
-    // na primeira vez o polinômio sempre será aplicado
-    for (int i = 0; i < POLINOMIO.length; i++) {
-      bitsCRC[i] ^= POLINOMIO[i];
-    }
-
     // aplicando o polinômio para os demais bits
     // se o bit for 1, aplicamos o polinômio
     // se o bit for 0, não aplicamos o polinômio
-    for (int i = 1; i < bits.length; i++) {
+    for (int i = 0; i < bits.length; i++) {
       if (bitsCRC[i]) {
         for (int j = 0; j < POLINOMIO.length; j++) {
           bitsCRC[i + j] ^= POLINOMIO[j];
@@ -71,6 +66,11 @@ public class Transmissor {
     boolean[] bitsFinais = new boolean[POLINOMIO.length - 1];
     System.arraycopy(bitsCRC, bitsCRC.length - (POLINOMIO.length - 1), bitsFinais, 0, POLINOMIO.length - 1);
 
+    System.out.print("BF");
+    for (int i = 0; i < bitsCRC.length; i++) {
+      System.out.print(bitsCRC[i] ? "1" : "0");
+    }
+
     return bitsFinais;
   }
 
@@ -79,22 +79,34 @@ public class Transmissor {
       boolean bits[] = streamCaracter(this.mensagem.charAt(i));
       boolean bitsCRC[] = dadoBitsCRC(bits);
 
-      geradorRuido(bits);
+      boolean bitsSemRuido[] = new boolean[bits.length];
+      bitsSemRuido = bits.clone();
 
-      boolean[] combinedBits = new boolean[bits.length + bitsCRC.length];
-      System.arraycopy(bits, 0, combinedBits, 0, bits.length);
-      System.arraycopy(bitsCRC, 0, combinedBits, bits.length, bitsCRC.length);
-
-      boolean indicadorCRC = receptor.receberDadoBits(combinedBits);
-      while (!indicadorCRC) {
-        System.out.println("Houve um erro na transmissão, reenviando...");
-        bitsCRC = dadoBitsCRC(bits);
-        combinedBits = new boolean[bits.length + bitsCRC.length];
+      boolean indicadorCRC;
+      do {
+        System.out.print("TL");
+        for (int j = 0; j < bits.length; j++) {
+          System.out.print(bits[j] ? "1" : "0");
+        }
+        System.out.println();
+        geradorRuido(bits);
+        System.out.print("TR");
+        for (int j = 0; j < bits.length; j++) {
+          System.out.print(bits[j] ? "1" : "0");
+        }
+        System.out.println();
+        boolean[] combinedBits = new boolean[bits.length + bitsCRC.length];
         System.arraycopy(bits, 0, combinedBits, 0, bits.length);
         System.arraycopy(bitsCRC, 0, combinedBits, bits.length, bitsCRC.length);
+
         indicadorCRC = receptor.receberDadoBits(combinedBits);
-      }
+        if (!indicadorCRC) {
+          System.out.println("Erro detectado, reenviando...");
+          bits = bitsSemRuido.clone();
+        }
+
+      } while (!indicadorCRC);
+
     }
   }
-
 }

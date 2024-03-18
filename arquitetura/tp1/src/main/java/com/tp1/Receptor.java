@@ -36,15 +36,11 @@ public class Receptor {
 
   private boolean verificaErro(boolean bits[]) {
     boolean POLINOMIO[] = { true, false, false, true, true }; // 10011
-    boolean[] bitsCRC = new boolean[bits.length + POLINOMIO.length - 1];
+    boolean[] bitsCRC = new boolean[bits.length];
     System.arraycopy(bits, 0, bitsCRC, 0, bits.length);
 
     // é repetida a operação realizada no Transmissor
-    for (int i = 0; i < POLINOMIO.length; i++) {
-      bitsCRC[i] ^= POLINOMIO[i];
-    }
-
-    for (int i = 1; i < bits.length; i++) {
+    for (int i = 0; i < bits.length - (POLINOMIO.length - 1); i++) {
       if (bitsCRC[i]) {
         for (int j = 0; j < POLINOMIO.length; j++) {
           bitsCRC[i + j] ^= POLINOMIO[j];
@@ -59,6 +55,18 @@ public class Receptor {
     // pegando os bits finais (CRC)
     boolean[] bitsFinais = new boolean[POLINOMIO.length - 1];
     System.arraycopy(bitsCRC, bitsCRC.length - (POLINOMIO.length - 1), bitsFinais, 0, POLINOMIO.length - 1);
+
+    System.out.print("BT");
+    for (int i = 0; i < bits.length; i++) {
+      System.out.print(bits[i] ? "1" : "0");
+    }
+    System.out.println();
+
+    System.out.print("BC");
+    for (int i = 0; i < bitsCRC.length; i++) {
+      System.out.print(bitsCRC[i] ? "1" : "0");
+    }
+    System.out.println();
 
     // verificando se o dado está correto, se os bits finais são todos falsos (0)
     for (int i = 0; i < bitsFinais.length; i++) {
