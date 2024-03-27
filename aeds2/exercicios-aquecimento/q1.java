@@ -3,7 +3,7 @@ import java.util.List;
 
 public class q1 {
   public static void main(String[] args) {
-    int n = 5;
+    int n = Integer.parseInt(args[0]);
     decompose(n, new ArrayList<>(), n);
   }
 
@@ -15,6 +15,7 @@ public class q1 {
 
     for (int i = Math.min(n, max); i > 0; i--) {
       decomposition.add(i);
+      System.out.println("n-i: " + (n - i) + " decomposition: " + decomposition + " i: " + i);
       decompose(n - i, decomposition, i);
       decomposition.remove(decomposition.size() - 1);
     }
