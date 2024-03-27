@@ -26,22 +26,23 @@ public class JogadorDardo extends Thread {
 
   public static void main(String[] args) {
     long nDardos = 100000000;
-    int nThreads = 4;
+    int nThreads = 14;
     long nAcertos = 0;
-    System.out.println(Thread.activeCount());
     System.out.println(Runtime.getRuntime().availableProcessors());
     ArrayList<JogadorDardo> jogadores = new ArrayList<JogadorDardo>();
-
+    
     for (int i = 0; i < nThreads; i++) {
       JogadorDardo j = new JogadorDardo(nDardos / nThreads);
       j.start();
       jogadores.add(j);
     }
-
+    System.out.println(Thread.activeCount());
+    
     jogadores.forEach(j -> {
       try {
         j.join();
       } catch (Exception e) {
+        System.out.println(e);
       }
     });
 
