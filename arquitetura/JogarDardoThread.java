@@ -22,7 +22,7 @@ public class JogarDardoThread {
       }
     }
 
-    System.out.println("Jogadores.java: ");
+    System.out.println(nThreads + " Threads: ");
     System.out.println("Pi = " + 4.0 * nAcertos / nDardos);
     System.out.print("Tempo de execução(s): ");
   }

@@ -12,7 +12,7 @@ public class JogadorDardo {
       }
     }
 
-    System.out.println("JogadorDardo.java: ");
+    System.out.println("1 Thread: ");
     System.out.println("Pi = " + 4.0 * nAcertos / nDardos);
     System.out.print("Tempo de execução(s): ");
   }
