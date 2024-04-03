@@ -1,4 +1,5 @@
 TIMEFORMAT=%R
-time java JogadorDardo.java
+javac *.java
+time java JogarDardoThread.java
 echo " "
-time java JogadorDardoThread.java
+time java JogadorDardo.java
