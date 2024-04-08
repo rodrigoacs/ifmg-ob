@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Jogadores extends Thread {
   private long nDardos;
@@ -11,10 +12,11 @@ public class Jogadores extends Thread {
 
   @Override
   public void run() {
+    Random random = new Random();
     double x, y;
     for (int i = 0; i < nDardos; i++) {
-      x = Math.random();
-      y = Math.random();
+      x = random.nextDouble();
+      y = random.nextDouble();
       if (Math.sqrt(x * x + y * y) < 1.0) {
         nAcertos++;
       }

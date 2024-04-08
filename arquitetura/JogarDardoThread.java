@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class JogarDardoThread {
   public static void main(String[] args) {
-    long nDardos = 100000000L;
+    long nDardos = 1000000000L;
     int nThreads = Runtime.getRuntime().availableProcessors();
     long nAcertos = 0;
     ArrayList<Jogadores> jogadores = new ArrayList<Jogadores>();
