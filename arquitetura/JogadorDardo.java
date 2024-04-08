@@ -1,6 +1,6 @@
 public class JogadorDardo {
   public static void main(String[] args) {
-    long nDardos = 100000000L;
+    long nDardos = 1000000000L;
     long nAcertos = 0;
 
     double x, y;
