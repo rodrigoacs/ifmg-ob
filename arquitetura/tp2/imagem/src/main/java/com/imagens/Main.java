@@ -65,43 +65,39 @@ public class Main {
     }
   }
 
-  public static int[][] corrigirImagem(int imgMat[][]) {
+  public static int[][] removerRuidos(int[][] imgMat, int tolerancia) {
     int largura = imgMat.length;
     int altura = imgMat[0].length;
+    int[][] novaImg = new int[largura][altura];
 
-    int[][] novaMatriz = new int[largura][altura];
-
-    for (int i = 0; i < largura; i++) {
-      for (int j = 0; j < altura; j++) {
-        if (imgMat[i][j] == 0 || imgMat[i][j] == 255) {
-          int sum = 0;
-          int count = 0;
-
-          if (i > 0) {
-            sum += imgMat[i - 1][j];
-            count++;
+    for (int i = 1; i < largura - 1; i++) {
+      for (int j = 1; j < altura - 1; j++) {
+        int soma = 0;
+        int contador = 0;
+        for (int k = -1; k <= 1; k++) {
+          for (int l = -1; l <= 1; l++) {
+            if (k != 0 || l != 0) {
+              soma += imgMat[i + k][j + l];
+              contador++;
+            }
           }
-          if (i < largura - 1) {
-            sum += imgMat[i + 1][j];
-            count++;
-          }
-          if (j > 0) {
-            sum += imgMat[i][j - 1];
-            count++;
-          }
-          if (j < altura - 1) {
-            sum += imgMat[i][j + 1];
-            count++;
-          }
-
-          novaMatriz[i][j] = (count > 0) ? (sum / count) : imgMat[i][j];
+        }
+        int mediaVizinhos = soma / contador;
+        if (Math.abs(imgMat[i][j] - mediaVizinhos) > tolerancia) {
+          novaImg[i][j] = mediaVizinhos;
         } else {
-          novaMatriz[i][j] = imgMat[i][j];
+          novaImg[i][j] = imgMat[i][j];
         }
       }
     }
+    return novaImg;
+  }
 
-    return novaMatriz;
+  public static int[][] corrigirImagem(int imgMat[][]) {
+    for (int tolerancia = 50; tolerancia >= 0; tolerancia -= 10) {
+      imgMat = removerRuidos(imgMat, tolerancia);
+    }
+    return imgMat;
   }
 
   public static void main(String[] args) {
