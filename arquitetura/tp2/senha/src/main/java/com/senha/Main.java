@@ -2,21 +2,19 @@ package com.senha;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.model.FileHeader;
 
 public class Main {
-
   public static final String caminho = "./arquivosTP/";
   public static final AtomicBoolean senhaEncontrada = new AtomicBoolean(false);
   public static String senhaFinal = "";
   public static final int MIN_ASCII = 33;
   public static final int MAX_ASCII = 127;
 
-  public static void testaFinal(String senha) {
+  public static boolean testaFinal(String senha) {
     ZipFile zipFile = new ZipFile(new File(caminho + "final.zip"));
 
     try {
@@ -29,16 +27,18 @@ public class Main {
       for (FileHeader fileHeader : fileHeaderList) {
         zipFile.extractFile(fileHeader, caminho);
       }
+
+      return true;
     } catch (net.lingala.zip4j.exception.ZipException ex) {
       // System.out.println("Erro ao extrair arquivo final.zip");
     }
+
+    return false;
   }
 
   public static void main(String[] args) {
-    if (args.length == 0) {
-      // System.out.println("Informe o número de threads");
+    if (args.length == 0)
       return;
-    }
 
     // System.out.println(System.getProperty("user.dir"));
 
@@ -74,12 +74,26 @@ public class Main {
     }
 
     // System.out.println("Senha final completa: " + senhaFinal);
-    testaFinal(senhaFinal);
-
+    if (testaFinal(senhaFinal)) {
+      System.out.println("Senha final encontrada: " + senhaFinal);
+      System.out.println("Arquivo final.zip extraído com sucesso");
+      System.out.println("Conteudo: ");
+      try {
+        File file = new File(caminho + "parabéns.txt");
+        java.util.Scanner scanner = new java.util.Scanner(file);
+        while (scanner.hasNextLine()) {
+          System.out.println(scanner.nextLine());
+        }
+        scanner.close();
+      } catch (FileNotFoundException e) {
+        System.out.println("Erro ao ler arquivo final.txt");
+      }
+    } else {
+      System.out.println("Senha final não encontrada");
+    }
   }
 
   static class Hacker extends Thread {
-
     private final int start;
     private final int end;
     ZipFile file;
@@ -102,7 +116,6 @@ public class Main {
 
     @Override
     public void run() {
-
       if (file == null)
         return;
 
@@ -111,6 +124,7 @@ public class Main {
           return;
         }
       } catch (Exception e) {
+
       }
 
       int i = start;
@@ -119,7 +133,6 @@ public class Main {
       char[] senha = new char[3];
 
       while (i <= end && !senhaEncontrada.get()) {
-
         senha[0] = (char) i;
         senha[1] = (char) j;
         senha[2] = (char) k;
@@ -149,7 +162,6 @@ public class Main {
     public boolean testaSenha(char[] senha) {
       try {
         file.setPassword(senha);
-
         for (FileHeader fileHeader : file.getFileHeaders()) {
           file.extractFile(fileHeader, caminho);
           return true;
