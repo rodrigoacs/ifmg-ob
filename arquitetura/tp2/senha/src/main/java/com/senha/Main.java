@@ -15,6 +15,7 @@ public class Main {
   public static final int MAX_ASCII = 127;
 
   public static boolean testaFinal(String senha) {
+    @SuppressWarnings("resource")
     ZipFile zipFile = new ZipFile(new File(caminho + "final.zip"));
 
     try {
@@ -39,8 +40,6 @@ public class Main {
   public static void main(String[] args) {
     if (args.length == 0)
       return;
-
-    // System.out.println(System.getProperty("user.dir"));
 
     String[] arquivos = { "doc1.zip", "doc2.zip", "doc3.zip", "doc4.zip" };
     int nThreads = Integer.parseInt(args[0]);
@@ -102,8 +101,6 @@ public class Main {
       this.start = start;
       this.end = end;
 
-      // System.out.println("hacker: " + arquivo + " [" + start + ", " + end + "]");
-
       try {
         if (new File(arquivo).exists()) {
           file = new ZipFile(new File(arquivo));
@@ -124,7 +121,7 @@ public class Main {
           return;
         }
       } catch (Exception e) {
-
+        // System.out.println(e.getMessage());
       }
 
       int i = start;
