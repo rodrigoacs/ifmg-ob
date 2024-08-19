@@ -1,29 +1,8 @@
-
 public class Tree {
   private Node root;
 
-  public boolean add(Node node, int value) {
-    if (node == null) {
-      root = new Node(value);
-      return true;
-    }
-
-    if (node.value < value) {
-      if (node.right == null) {
-        node.right = new Node(value);
-        return true;
-      } else {
-        return add(node.right, value);
-      }
-    } else {
-      if (node.left == null) {
-        node.left = new Node(value);
-        return true;
-      } else {
-        return add(node.left, value);
-      }
-
-    }
+  public void setRoot(Node root) {
+    this.root = root;
   }
 
   public void print(Node node) {
@@ -45,28 +24,57 @@ public class Tree {
       return true;
     }
 
-    if (node.value < value) {
-      return search(node.right, value);
-    } else {
+    if (value < node.value) {
       return search(node.left, value);
+    } else {
+      return search(node.right, value);
     }
   }
 
+  public boolean isSubtree(Node tree, Node subtree) {
+    if (subtree == null) {
+      return true;
+    }
+    if (tree == null) {
+      return false;
+    }
+    if (areIdentical(tree, subtree)) {
+      return true;
+    }
+    return isSubtree(tree.left, subtree) || isSubtree(tree.right, subtree);
+  }
+
+  private boolean areIdentical(Node tree1, Node tree2) {
+    if (tree1 == null && tree2 == null) {
+      return true;
+    }
+    if (tree1 == null || tree2 == null) {
+      return false;
+    }
+    return (tree1.value == tree2.value) &&
+        areIdentical(tree1.left, tree2.left) &&
+        areIdentical(tree1.right, tree2.right);
+  }
+
   public static void main(String[] args) {
-    Tree tree = new Tree();
-    tree.add(tree.root, 10);
-    tree.add(tree.root, 5);
-    tree.add(tree.root, 15);
-    tree.add(tree.root, 3);
-    tree.add(tree.root, 7);
-    tree.add(tree.root, 12);
-    tree.add(tree.root, 17);
+    Tree treeT = new Tree();
+    Node tRoot = new Node(26);
+    tRoot.left = new Node(10);
+    tRoot.right = new Node(3);
+    tRoot.left.left = new Node(4);
+    tRoot.left.right = new Node(6);
+    tRoot.left.left.left = new Node(30);
+    tRoot.right.right = new Node(3);
+    treeT.setRoot(tRoot);
 
-    tree.print(tree.root);
+    Tree treeS = new Tree();
+    Node sRoot = new Node(10);
+    sRoot.left = new Node(4);
+    sRoot.right = new Node(6);
+    sRoot.left.left = new Node(30);
+    treeS.setRoot(sRoot);
 
-    System.out.println(tree.search(tree.root, 10));
-    System.out.println(tree.search(tree.root, 5));
-    System.out.println(tree.search(tree.root, 13));
+    System.out.println(treeT.isSubtree(treeT.root, treeS.root));
   }
 }
 
