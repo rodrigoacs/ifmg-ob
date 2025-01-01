@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador de Escalonador</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+    <style>
+      .config-form {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      #ganttContainer {
+        position: relative;
+        height: auto;
+        width: 100%;
+        padding-left: 120px;
+      }
+
+      .gantt-block {
+        position: absolute;
+        border-radius: 5px;
+        background-color: brown;
+        color: white;
+        text-align: center;
+        font-size: 12px;
+        line-height: 30px;
+        cursor: pointer;
+        border: 1px solid #333;
+      }
+
+      .process-label {
+        position: absolute;
+        left: 0;
+        width: 100px;
+        font-weight: bold;
+        font-size: 14px;
+        text-align: right;
+        padding-right: 10px;
+        line-height: 30px;
+      }
+
+      .scale {
+        position: relative;
+        width: 100%;
+        height: 20px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 10px;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .scale div {
+        position: absolute;
+        text-align: center;
+        transform: translateX(-50%);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Simulador de Escalonador</h1>
+
+    <div>
+      <h2>Configuração</h2>
+      <div class="config-form">
+        <div>
+          <label for="algorithm">Algoritmo:</label>
+          <select id="algorithm">
+            <option value="priority">Prioridade</option>
+            <option value="round_robin">Round Robin</option>
+          </select>
+        </div>
+        <div>
+          <label for="quantum">Quantum (somente para RR):</label>
+          <input type="number" id="quantum" min="1" value="2" />
+        </div>
+        <div>
+          <label for="numProcessors">Número de Processadores:</label>
+          <input type="number" id="numProcessors" min="1" value="1" /><br />
+        </div>
+        <div>
+          <label for="numProcesses">Quantidade de Processos:</label>
+          <input type="number" id="numProcesses" min="1" value="5" /><br />
+        </div>
+      </div>
+      <button id="generateProcesses">Gerar Processos Aleatórios</button>
+    </div>
+    <div class="task-list">
+      <h2>Fila de Processos</h2>
+      <table id="processTable" border="1" cellpadding="5" style="width: 100%; text-align: left">
+        <thead>
+          <tr>
+            <th>Processo</th>
+            <th>Ordem de Chegada</th>
+            <th>Tempo de Execução</th>
+            <th>Prioridade</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <button id="runScheduler">Executar Escalonador</button>
+    <div class="log">
+      <h2>Logs de Execução</h2>
+      <div id="executionLog"></div>
+    </div>
+    <div class="gantt-chart">
+      <h2>Diagrama de Gantt</h2>
+      <div id="scaleContainer" class="scale"></div>
+      <div id="ganttContainer"></div>
+    </div>
+    <script src="scheduler.js"></script>
+  </body>
+</html>
