@@ -4,63 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simulador de Escalonador</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
-    <style>
-      .config-form {
-        display: flex;
-        justify-content: space-around;
-      }
-
-      #ganttContainer {
-        position: relative;
-        height: auto;
-        width: 100%;
-        padding-left: 120px;
-      }
-
-      .gantt-block {
-        position: absolute;
-        border-radius: 5px;
-        background-color: brown;
-        color: white;
-        text-align: center;
-        font-size: 12px;
-        line-height: 30px;
-        cursor: pointer;
-        border: 1px solid #333;
-      }
-
-      .process-label {
-        position: absolute;
-        left: 0;
-        width: 100px;
-        font-weight: bold;
-        font-size: 14px;
-        text-align: right;
-        padding-right: 10px;
-        line-height: 30px;
-      }
-
-      .scale {
-        position: relative;
-        width: 100%;
-        height: 20px;
-        border-bottom: 1px solid #ddd;
-        margin-bottom: 10px;
-        font-size: 12px;
-        color: #666;
-      }
-
-      .scale div {
-        position: absolute;
-        text-align: center;
-        transform: translateX(-50%);
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Simulador de Escalonador</h1>
-
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <h1>Simulador de Escalonador</h1>
+      <button id="resetSimulation">Resetar Simulador</button>
+    </div>
     <div>
       <h2>Configuração</h2>
       <div class="config-form">
@@ -84,11 +34,32 @@
           <input type="number" id="numProcesses" min="1" value="5" /><br />
         </div>
       </div>
-      <button id="generateProcesses">Gerar Processos Aleatórios</button>
     </div>
+    <div>
+      <div class="add-process-form">
+        <div>
+          <label for="manualId">ID:</label>
+          <input type="text" id="manualId" placeholder="Ex.: P6" />
+        </div>
+        <div>
+          <label for="manualArrivalOrder">Ordem de Chegada:</label>
+          <input type="number" id="manualArrivalOrder" min="1" placeholder="Ex.: 6" />
+        </div>
+        <div>
+          <label for="manualDuration">Tempo de Execução:</label>
+          <input type="number" id="manualDuration" min="1" placeholder="Ex.: 4" />
+        </div>
+        <div>
+          <label for="manualPriority">Prioridade:</label>
+          <input type="number" id="manualPriority" min="1" placeholder="Ex.: 5" />
+        </div>
+      </div>
+    </div>
+    <button id="generateProcesses">Gerar Processos Aleatórios</button>
+    <button id="addManualProcess">Adicionar Processo</button>
     <div class="task-list">
       <h2>Fila de Processos</h2>
-      <table id="processTable" border="1" cellpadding="5" style="width: 100%; text-align: left">
+      <table id="processTable" cellpadding="5" style="width: 100%; text-align: left">
         <thead>
           <tr>
             <th>Processo</th>
