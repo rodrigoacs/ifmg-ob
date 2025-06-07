@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador de Escalonamento</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Simulador de Escalonamento</h1>
+      <div>
+        <button id="loadProcesses">Carregar Processos</button>
+        <button id="resetProcesses">Resetar Processos</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="processes">
+        <div class="config">
+          <h2>Configuração</h2>
+          <div class="config-form">
+            <div>
+              <label for="algorithm">Algoritmo:</label>
+              <select id="algorithm">
+                <option value="priority">Prioridade</option>
+                <option value="round_robin">Round Robin</option>
+              </select>
+            </div>
+            <div>
+              <label for="quantum">Quantum (somente para RR):</label>
+              <input type="number" id="quantum" min="1" value="2" />
+            </div>
+            <div>
+              <label for="numProcessors">Número de Processadores:</label>
+              <input type="number" id="numProcessors" min="1" value="1" /><br />
+            </div>
+          </div>
+        </div>
+
+        <section class="process-table">
+          <table id="processTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Ordem de Chegada</th>
+                <th>Duração</th>
+                <th>Prioridade</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </section>
+      </div>
+
+      <section class="controls">
+        <button id="runScheduler">Executar Escalonador</button>
+      </section>
+
+      <h2>Log de Execução</h2>
+      <section id="executionLog" class="log"></section>
+
+      <div class="gantt-chart">
+        <h2>Diagrama de Gantt</h2>
+        <div id="scaleContainer" class="scale"></div>
+        <div id="ganttContainer" class="gantt-container"></div>
+      </div>
+    </main>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

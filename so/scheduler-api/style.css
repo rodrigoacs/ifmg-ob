@@ -1,0 +1,303 @@
+/* Color Variables */
+:root {
+  --primary-color: #1e88e5;
+  --secondary-color: #e53935;
+  --background-color: #121212;
+  --surface-color: #1e1e1e;
+  --on-surface-color: #e0e0e0;
+  --on-primary-color: #ffffff;
+  --border-color: #333333;
+  --hover-primary-color: #1565c0;
+  --hover-secondary-color: #c62828;
+  --gantt-block-color: #43a047;
+  --gantt-block-hover-color: #2e7d32;
+}
+
+/* General Styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  margin: 0 auto;
+  max-width: 1200px;
+  background-color: var(--background-color);
+  color: var(--on-surface-color);
+  line-height: 1.6;
+  padding: 0 20px;
+}
+
+h1,
+h2 {
+  color: var(--on-primary-color);
+  font-weight: 700;
+}
+
+button {
+  background-color: var(--primary-color);
+  color: var(--on-primary-color);
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+section button {
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: var(--hover-primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+header button {
+  background-color: var(--secondary-color);
+}
+
+header button:hover {
+  background-color: var(--hover-secondary-color);
+}
+
+/* Forms */
+.config {
+  display: flex;
+  flex-direction: column;
+}
+
+.processes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.config-form,
+.add-process-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.config-form {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.add-process-form {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  align-items: end;
+}
+
+.config-form>div,
+.add-process-form>div {
+  display: flex;
+  flex-direction: column;
+}
+
+.config-form label,
+.add-process-form label {
+  font-weight: 600;
+  color: var(--on-surface-color);
+}
+
+.config-form input,
+.config-form select,
+.add-process-form input {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: var(--surface-color);
+  color: var(--on-surface-color);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.config-form input:focus,
+.config-form select:focus,
+.add-process-form input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+}
+
+.add-process-form button {
+  align-self: flex-end;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--surface-color);
+  color: var(--on-surface-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+tbody {
+  border: none;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border: none;
+}
+
+th {
+  background-color: var(--primary-color);
+  color: var(--on-primary-color);
+  font-weight: 600;
+}
+
+tr {
+  border: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Logs */
+#executionLog {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  color: var(--on-surface-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Gantt Chart */
+#ganttContainer {
+  position: relative;
+  width: 100%;
+  background-color: var(--surface-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gantt-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.gantt-block {
+  position: absolute;
+  background-color: #1e88e5;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  line-height: 30px;
+  font-size: 14px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.gantt-block:hover {
+  background-color: var(--gantt-block-hover-color);
+}
+
+/* Diagram Labels */
+.process-label {
+  position: absolute;
+  left: 0;
+  width: 100px;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: right;
+  padding-right: 10px;
+  line-height: 30px;
+  color: var(--on-surface-color);
+}
+
+/* Time Scale */
+.scale {
+  position: relative;
+  height: 20px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #fff;
+  /* Branco para contraste */
+}
+
+.scale div {
+  position: absolute;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+
+  .config-form,
+  .add-process-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.config-form,
+.add-process-form,
+table,
+#executionLog,
+#ganttContainer {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-color);
+}
