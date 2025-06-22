@@ -1,5 +1,5 @@
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-const serverUrl = 'http://banco-seguro.com:8080/api/account_details'
+const serverUrl = 'http://banco-seguro.com:8081/api/account_details'
 
 async function consultarSaldo() {
   try {
