@@ -1,0 +1,287 @@
+/* CSS para estilizar elementos do template de login */
+
+body.anonima {
+    background-attachment: fixed;
+    background-color: #555;
+    background-image: url(/static/comum/img/login-background.jpg);
+    background-repeat: no-repeat;
+    background-position: center 0;
+    background-size: cover;
+}
+
+body.anonima aside {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 10vh 50px;
+    width: 360px;
+}
+    body.anonima.hideSidebar aside {
+        padding: 0;
+        width: 0;
+    }
+body.anonima header h1 {
+    height: auto;
+    margin: 10px 0 20px;
+    width: 72px;
+}
+body.anonima header h1 a {
+    background-size: contain;
+    height: 30px;
+    width: 72px;
+}
+body.anonima header img {
+    float: right;
+    width: 148px;
+}
+body.anonima h3 {
+    color: #999;
+    font-weight: 300;
+}
+body.anonima main {
+    width: auto;
+}
+body.anonima nav > ul > li > span {
+    color: #aaa;
+    font-size: 90%;
+    text-transform: uppercase;
+}
+    body.anonima.hideSidebar nav > ul > li > span {
+        display: none;
+    }
+body.anonima nav > ul > li ul {
+    display: block;
+    padding: 0 0 20px;
+}
+body.anonima nav > ul > li li {
+    border-bottom: 1px solid #444;
+    margin: 0;
+}
+body.anonima nav > ul > li li > a {
+    font-size: 110%;
+}
+body.anonima nav > ul > li li > a i.fas {
+    margin-right: 8px;
+    opacity: 0.3;
+    width: 13px;
+}
+body.anonima:not(.hideSidebar) nav > ul > li:hover {
+    background-color: transparent;
+}
+body.anonima #content {
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 50px;
+    padding: 50px;
+}
+    body.anonima.login #content {
+        background-color: transparent;
+        margin: 10vh 50px 0;
+        padding: 0;
+    }
+body.anonima #content h2 span.fas {
+    font-size: 85%;
+    margin-right: 5px;
+    min-width: 22px;
+    opacity: 0.5;
+}
+body.anonima #content .category {
+    display: block;
+    font-size: 90%;
+    font-weight: 300;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+body.anonima #login {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+    padding: 60px;
+    width: 40%;
+}
+body.anonima #login form {
+    margin-top: 20px;
+}
+body.anonima #login h2 {
+    background-image: url(/static/comum/img/logo-login.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100px;
+    max-width: 100%;
+    text-indent: -9000px;
+    width: 100%;
+}
+body.anonima #login h3 .fas {
+    margin-right: 5px;
+    opacity: 0.5;
+}
+body.anonima #login .form-row {
+    margin: 0 0 10px;
+}
+body.anonima #login .form-row a {
+    display: inline-block;
+    padding-top: 20px;
+    text-align: right;
+    width: 100%;
+}
+body.anonima #login .form-row input[type="password"],
+body.anonima #login .form-row input[type="text"] {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 120%;
+    height: 46px;
+    max-width: 100%;
+    padding: 0 5px;
+    width: 100%;
+}
+body.anonima #login .form-row input.password-input {
+    border-radius: 5px 0 0 5px;
+    width: calc(100% - 40px);
+}
+body.anonima .password-container {
+    width: 100%;
+}
+body.anonima #login .form-row input.password-input + button.input-group-addon {
+    border: 2px solid #ccc;
+    border-left: 0 none;
+    height: 46px;
+}
+body.anonima #login label.required {
+    cursor: default;
+    font-weight: 300 !important;
+}
+body.anonima #login label.required::before {
+    content: "";
+}
+body.anonima #login .form-row input[type="password"]:active,
+body.anonima #login .form-row input[type="password"]:focus,
+body.anonima #login .form-row input[type="text"]:active,
+body.anonima #login .form-row input[type="text"]:focus {
+    border: 2px solid #5bb75b;
+}
+body.anonima #login .form-row label {
+    clear: left;
+    color: #666666 !important;
+    font-weight: normal !important;
+    line-height: 1em;
+    padding: 0 5px 0 0;
+    text-align: left !important;
+}
+body.anonima #login .submit-row input[type="submit"] {
+    font-size: 120%;
+    height: 45px;
+    margin-right: 0;
+    width: 100%;
+}
+body.anonima .errorlist,
+body.anonima .messagelist {
+    margin: 10px 0 0;
+    padding: 0 !important;
+}
+body.anonima .errornote,
+body.anonima .msg {
+    left: 0;
+    width: 100%;
+}
+body.anonima .login-footer {
+    background-color: #292929;
+    grid-area: footer;
+    justify-content: center;
+}
+body.anonima .login-footer .flex-item {
+    color: #fff;
+    flex-grow: 0;
+    flex-basis: auto;
+    font-size: 1rem;
+    font-weight: 300;
+    padding: 20px;
+    text-align: center;
+}
+    body.anonima.login .login-footer .flex-item {
+        color: #ddd;
+    }
+body.anonima .login-footer .flex-item .fab,
+body.anonima .login-footer .flex-item .fas {
+    color: rgba(255, 255, 255, .25);
+    font-size: 1rem;
+    margin-right: 5px;
+}
+body.anonima .toggleSidebar {
+    left: 360px
+}
+    body.anonima.hideSidebar .toggleSidebar {
+        left: 0;
+    }
+body.anonima .toggleSidebar span.fas {
+    color: #eee;
+}
+
+body.anonima.hideSidebar header img {
+    display: none;
+}
+
+@media screen and (min-width: 1200px) {
+    body.anonima #login {
+        width: 50%;
+    }
+}
+@media screen and (min-width: 1700px) {
+    body.anonima #login {
+        width: 40%;
+    }
+}
+@media screen and (max-width: 1300px) {
+    body.anonima #login {
+        width: 60%;
+    }
+}
+@media screen and (max-width: 1200px) {
+    body.anonima #login {
+        width: 80%;
+    }
+}
+@media screen and (max-width: 940px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-device-width: 736px) and (min-device-width: 320px), only screen and (-webkit-min-device-pixel-ratio: 1) and (max-device-width: 1024px) and (min-device-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-device-width: 1024px) and (min-device-width: 768px) {
+    .holder aside.nav {
+        background-color: rgba(0, 0, 0, 0.8);
+        width: 80%;
+    }
+    body.anonima aside {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+    body.anonima #content {
+        margin: 20px;
+        max-width: calc(100% - 40px);
+        padding: 20px;
+        width: calc(100% - 40px);
+    }
+    body.anonima .login-footer {
+        background-color: transparent;
+        padding-bottom: 2rem;
+    }
+    body.anonima .login-footer .flex-item {
+        padding: 20px 20px 0;
+    }
+    body.anonima.login .login-footer .flex-item {
+        color: #fff;
+    }
+    body.anonima #login {
+        padding: 45px 25px;
+        width: 100%;
+    }
+    body.anonima.login #content {
+        margin: 25px 20px 20px 30px;
+        max-width: calc(100% - 50px);
+        width: calc(100% - 50px);
+    }
+    body.anonima .toggleSidebar {
+        left: 80%;
+    }
+    body.anonima.hideSidebar .toggleSidebar {
+        left: 0;
+    }
+    body.anonima.hideSidebar main {
+        width: calc(100% - 20vh);
+    }
+}
