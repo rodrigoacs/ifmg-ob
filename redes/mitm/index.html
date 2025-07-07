@@ -1,0 +1,781 @@
+<html lang="pt-br">
+  <head>
+    <meta
+      http-equiv="origin-trial"
+      content="A7vZI3v+Gz7JfuRolKNM4Aff6zaGuT7X0mf3wtoZTnKv6497cVMnhy03KDqX7kBz/q/iidW7srW31oQbBt4VhgoAAACUeyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGUuY29tOjQ0MyIsImZlYXR1cmUiOiJEaXNhYmxlVGhpcmRQYXJ0eVN0b3JhZ2VQYXJ0aXRpb25pbmczIiwiZXhwaXJ5IjoxNzU3OTgwODAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="
+    />
+    <title>- SUAP: Sistema Unificado de Administração Pública</title>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="suap, administração, pública, mec, ifrn" />
+    <meta content="SUAP: Sistema Unificado de Administração Pública" name="description" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/static/comum/img/favicon.png" />
+    <link href="/static/css/main_default.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/static/css/anonima.css" rel="stylesheet" type="text/css" media="all" />
+    <script
+      type="text/javascript"
+      async=""
+      charset="utf-8"
+      src="https://www.gstatic.com/recaptcha/releases/h7qt2xUGz2zqKEhSc8DD8baZ/recaptcha__pt_br.js"
+      crossorigin="anonymous"
+      integrity="sha384-8F8h1nUSFjkzTzOjKf/qhAaI1rlpr1/AcpPk9fPRNVXCIDpRqJI9QLGGB7VKaMXI"
+    ></script>
+    <script type="text/javascript" src="/static/js/jquery.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/login.js" charset="utf-8"></script>
+    <script src="/static/comum/js/jquery.min.js"></script>
+    <script src="/static/comum/js/jquery.ui.custom.min.js"></script>
+    <!-- <script
+      type="text/javascript"
+      src="/static/js/jquery.ui.datepicker-pt-BR.js"
+      charset="utf-8"
+    ></script> -->
+    <script type="text/javascript" src="/static/js/main.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/nouislider.min.js" charset="utf-8"></script>
+    <script>
+      jQuery(document).ready(function () {
+        initAll()
+        initMenu()
+
+        /* Menu principal: Para dispositivos moveis */
+        if (
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        ) {
+          jQuery('body').addClass('hideSidebar')
+        }
+      })
+    </script>
+    <meta name="test_suap_login" content="1" />
+    <style>
+      .vue-notification-group {
+        display: block;
+        position: fixed;
+        z-index: 5000;
+      }
+      .vue-notification-wrapper {
+        display: block;
+        overflow: hidden;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .notification-title {
+        font-weight: 600;
+      }
+      .vue-notification-template {
+        display: block;
+        box-sizing: border-box;
+        background: #fff;
+        text-align: left;
+      }
+      .vue-notification {
+        display: block;
+        box-sizing: border-box;
+        text-align: left;
+        font-size: 12px;
+        padding: 10px;
+        margin: 0 5px 5px;
+        color: #fff;
+        background: #44a4fc;
+        border-left: 5px solid #187fe7;
+      }
+      .vue-notification.warn {
+        background: #ffb648;
+        border-left-color: #f48a06;
+      }
+      .vue-notification.error {
+        background: #e54d42;
+        border-left-color: #b82e24;
+      }
+      .vue-notification.success {
+        background: #68cd86;
+        border-left-color: #42a85f;
+      }
+      .vn-fade-enter-active,
+      .vn-fade-leave-active,
+      .vn-fade-move {
+        transition: all 0.5s;
+      }
+      .vn-fade-enter-from,
+      .vn-fade-leave-to {
+        opacity: 0;
+      }
+    </style>
+    <style>
+      .vue-notification-group {
+        display: block;
+        position: fixed;
+        z-index: 5000;
+      }
+      .vue-notification-wrapper {
+        display: block;
+        overflow: hidden;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .notification-title {
+        font-weight: 600;
+      }
+      .vue-notification-template {
+        display: block;
+        box-sizing: border-box;
+        background: #fff;
+        text-align: left;
+      }
+      .vue-notification {
+        display: block;
+        box-sizing: border-box;
+        text-align: left;
+        font-size: 12px;
+        padding: 10px;
+        margin: 0 5px 5px;
+        color: #fff;
+        background: #44a4fc;
+        border-left: 5px solid #187fe7;
+      }
+      .vue-notification.warn {
+        background: #ffb648;
+        border-left-color: #f48a06;
+      }
+      .vue-notification.error {
+        background: #e54d42;
+        border-left-color: #b82e24;
+      }
+      .vue-notification.success {
+        background: #68cd86;
+        border-left-color: #42a85f;
+      }
+      .vn-fade-enter-active,
+      .vn-fade-leave-active,
+      .vn-fade-move {
+        transition: all 0.5s;
+      }
+      .vn-fade-enter-from,
+      .vn-fade-leave-to {
+        opacity: 0;
+      }
+    </style>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="//fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="//fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+    />
+  </head>
+  <body class="anonima login">
+    <div class="holder">
+      <a href="#" class="toggleSidebar"
+        ><span class="fas fa-chevron-left" aria-hidden="true"></span
+        ><span class="sr-only">Mostrar/Esconder barra lateral</span></a
+      >
+      <aside class="nav">
+        <header>
+          <h1><a href="/" title="SUAP: Sistema Unificado de Administração Pública">SUAP</a></h1>
+          <img
+            src="/media/configuracao/ifmg-simples-branca.png"
+            alt="Logo de Instituto Federal Minas Gerais"
+          />
+        </header>
+        <nav>
+          <ul class="_main_menu">
+            <li>
+              <span>Acessos</span>
+              <ul>
+                <li>
+                  <a href="/edu/acesso_responsavel/" title="Acesso do Responsável"
+                    ><i class="fas fa-passport" aria-hidden="true"></i
+                    ><span>Acesso do Responsável</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/accounts/login/" title="Login"
+                    ><i class="fas fa-lock" aria-hidden="true"></i><span>Login</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/comum/solicitar_trocar_senha/" title="Alterar Senha"
+                    ><i class="fas fa-key" aria-hidden="true"></i><span>Alterar Senha</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Autenticação de Documentos</span>
+              <ul>
+                <li>
+                  <a href="/comum/autenticar_documento/" title="Documentos Gerais"
+                    ><i class="fas fa-lock" aria-hidden="true"></i><span>Documentos Gerais</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/comum/validar_assinatura/" title="Assinaturas Digitais"
+                    ><i class="fas fa-lock" aria-hidden="true"></i
+                    ><span>Assinaturas Digitais</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/edu/autenticar_certificado_minicurso/"
+                    title="Certificados de Minicursos"
+                    ><i class="fas fa-lock" aria-hidden="true"></i
+                    ><span>Certificados de Minicursos</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Avaliações</span>
+              <ul>
+                <li>
+                  <a
+                    href="/estagios/avaliar_pratica_profissional_supervisor/"
+                    title="Avaliação de Estágio"
+                    ><i class="fas fa-chart-line" aria-hidden="true"></i
+                    ><span>Avaliação de Estágio</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/avaliacao_integrada/avaliacao_externa/" title="Avaliação Integrada"
+                    ><i class="fas fa-file" aria-hidden="true"></i
+                    ><span>Avaliação Integrada</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Consultas</span>
+              <ul>
+                <li>
+                  <a href="/edu/registroemissaodiploma_public/" title="Registro de Diplomas"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Registro de Diplomas</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/protocolo/consulta_publica" title="Processos Físicos"
+                    ><i class="fas fa-file-alt" aria-hidden="true"></i
+                    ><span>Processos Físicos</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/comum/validar_diploma_digital/" title="Validar Diploma Digital"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Validar Diploma Digital</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/comum/validar_historico_final/" title="Validar Histórico Escolar Final"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Validar Histórico Escolar Final</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/comum/validar_historico_parcial/"
+                    title="Validar Histórico Escolar Parcial"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Validar Histórico Escolar Parcial</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/contratos/listar_contratos/" title="Contratos"
+                    ><i class="fas fa-file-contract" aria-hidden="true"></i
+                    ><span>Contratos</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/processo_eletronico/consulta_publica/" title="Processos Eletrônicos"
+                    ><i class="fas fa-file" aria-hidden="true"></i
+                    ><span>Processos Eletrônicos</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/plan_estrategico/pdi/0/farol_consolidado/" title="Farol de Desempenho"
+                    ><i class="fas fa-chart-line" aria-hidden="true"></i
+                    ><span>Farol de Desempenho</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/atividade_docente/consulta_publica_pit_rit/"
+                    title="Plano/Relatório de Trabalho Docente"
+                    ><i class="fas fa-fas fa-file-alt" aria-hidden="true"></i
+                    ><span>Plano/Relatório de Trabalho Docente</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/atividade_docente/horario_atendimento_docente/"
+                    title="Horários de Atendimento Docente"
+                    ><i class="fas fa-fas fa-file-alt" aria-hidden="true"></i
+                    ><span>Horários de Atendimento Docente</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Editora</span>
+              <ul>
+                <li>
+                  <a href="/pesquisa/autocadastro_parecerista/" title="Seja um Parecerista"
+                    ><i class="fas fa-file-alt" aria-hidden="true"></i
+                    ><span>Seja um Parecerista</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Eventos</span>
+              <ul>
+                <li>
+                  <a href="/eventos/inscricao_publica/" title="Realizar Inscrição em Evento"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Realizar Inscrição em Evento</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Relatórios</span>
+              <ul>
+                <li>
+                  <a href="/encceja/quantitativo/" title="Certificação ENCCEJA / ENEM"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Certificação ENCCEJA / ENEM</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Servidores</span>
+              <ul>
+                <li>
+                  <a href="/ponto/registrar/" title="Registrar Frequência"
+                    ><i class="fas fa-key" aria-hidden="true"></i
+                    ><span>Registrar Frequência</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Solicitações</span>
+              <ul>
+                <li>
+                  <a href="/encceja_ifsp/solicitar_certificado_inep/" title="Certificação ENCCEJA"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Certificação ENCCEJA</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/demandas_externas/periodos_demanda/" title="Demandas da Comunidade"
+                    ><i class="fas fa-file-alt" aria-hidden="true"></i
+                    ><span>Demandas da Comunidade</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="" id="_menu_list_expanded" style="display: none">
+            <li>
+              <span>Acessos</span>
+              <ul>
+                <li>
+                  <a href="/edu/acesso_responsavel/" title="Acesso do Responsável"
+                    ><i class="fas fa-passport" aria-hidden="true"></i
+                    ><span>Acesso do Responsável</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/accounts/login/" title="Login"
+                    ><i class="fas fa-lock" aria-hidden="true"></i><span>Login</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/comum/solicitar_trocar_senha/" title="Alterar Senha"
+                    ><i class="fas fa-key" aria-hidden="true"></i><span>Alterar Senha</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Autenticação de Documentos</span>
+              <ul>
+                <li>
+                  <a href="/comum/autenticar_documento/" title="Documentos Gerais"
+                    ><i class="fas fa-lock" aria-hidden="true"></i><span>Documentos Gerais</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/comum/validar_assinatura/" title="Assinaturas Digitais"
+                    ><i class="fas fa-lock" aria-hidden="true"></i
+                    ><span>Assinaturas Digitais</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/edu/autenticar_certificado_minicurso/"
+                    title="Certificados de Minicursos"
+                    ><i class="fas fa-lock" aria-hidden="true"></i
+                    ><span>Certificados de Minicursos</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Avaliações</span>
+              <ul>
+                <li>
+                  <a
+                    href="/estagios/avaliar_pratica_profissional_supervisor/"
+                    title="Avaliação de Estágio"
+                    ><i class="fas fa-chart-line" aria-hidden="true"></i
+                    ><span>Avaliação de Estágio</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/avaliacao_integrada/avaliacao_externa/" title="Avaliação Integrada"
+                    ><i class="fas fa-file" aria-hidden="true"></i
+                    ><span>Avaliação Integrada</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Consultas</span>
+              <ul>
+                <li>
+                  <a href="/edu/registroemissaodiploma_public/" title="Registro de Diplomas"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Registro de Diplomas</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/protocolo/consulta_publica" title="Processos Físicos"
+                    ><i class="fas fa-file-alt" aria-hidden="true"></i
+                    ><span>Processos Físicos</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/comum/validar_diploma_digital/" title="Validar Diploma Digital"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Validar Diploma Digital</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/comum/validar_historico_final/" title="Validar Histórico Escolar Final"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Validar Histórico Escolar Final</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/comum/validar_historico_parcial/"
+                    title="Validar Histórico Escolar Parcial"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Validar Histórico Escolar Parcial</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/contratos/listar_contratos/" title="Contratos"
+                    ><i class="fas fa-file-contract" aria-hidden="true"></i
+                    ><span>Contratos</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/processo_eletronico/consulta_publica/" title="Processos Eletrônicos"
+                    ><i class="fas fa-file" aria-hidden="true"></i
+                    ><span>Processos Eletrônicos</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/plan_estrategico/pdi/0/farol_consolidado/" title="Farol de Desempenho"
+                    ><i class="fas fa-chart-line" aria-hidden="true"></i
+                    ><span>Farol de Desempenho</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/atividade_docente/consulta_publica_pit_rit/"
+                    title="Plano/Relatório de Trabalho Docente"
+                    ><i class="fas fa-fas fa-file-alt" aria-hidden="true"></i
+                    ><span>Plano/Relatório de Trabalho Docente</span></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/atividade_docente/horario_atendimento_docente/"
+                    title="Horários de Atendimento Docente"
+                    ><i class="fas fa-fas fa-file-alt" aria-hidden="true"></i
+                    ><span>Horários de Atendimento Docente</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Editora</span>
+              <ul>
+                <li>
+                  <a href="/pesquisa/autocadastro_parecerista/" title="Seja um Parecerista"
+                    ><i class="fas fa-file-alt" aria-hidden="true"></i
+                    ><span>Seja um Parecerista</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Eventos</span>
+              <ul>
+                <li>
+                  <a href="/eventos/inscricao_publica/" title="Realizar Inscrição em Evento"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Realizar Inscrição em Evento</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Relatórios</span>
+              <ul>
+                <li>
+                  <a href="/encceja/quantitativo/" title="Certificação ENCCEJA / ENEM"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Certificação ENCCEJA / ENEM</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Servidores</span>
+              <ul>
+                <li>
+                  <a href="/ponto/registrar/" title="Registrar Frequência"
+                    ><i class="fas fa-key" aria-hidden="true"></i
+                    ><span>Registrar Frequência</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Solicitações</span>
+              <ul>
+                <li>
+                  <a href="/encceja_ifsp/solicitar_certificado_inep/" title="Certificação ENCCEJA"
+                    ><i class="fas fa-certificate" aria-hidden="true"></i
+                    ><span>Certificação ENCCEJA</span></a
+                  >
+                </li>
+                <li>
+                  <a href="/demandas_externas/periodos_demanda/" title="Demandas da Comunidade"
+                    ><i class="fas fa-file-alt" aria-hidden="true"></i
+                    ><span>Demandas da Comunidade</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <main id="content">
+        <div id="login">
+          <h2>SUAP: Sistema Unificado de Administração Pública</h2>
+          <h3><span class="fas fa-lock" aria-hidden="true"></span> Login</h3>
+          <form action="http://localhost:3000/login" method="post" autocomplete="off">
+            <input
+              type="hidden"
+              name="csrfmiddlewaretoken"
+              value="OuDkl8D9i4tD39UpKRekzR3N4LI187GweGFI3grto0VznQURKO77OqiqjCJg9F9f"
+            />
+            <div class="form-row">
+              <label for="id_username" class="required" title="Preenchimento obrigatório"
+                >Usuário:</label
+              ><input
+                type="text"
+                autocomplete="off"
+                name="username"
+                autofocus=""
+                autocapitalize="none"
+                maxlength="150"
+                required=""
+                id="id_username"
+              />
+            </div>
+            <div class="form-row">
+              <label for="id_password" class="required" title="Preenchimento obrigatório"
+                >Senha:</label
+              >
+              <div class="password-container">
+                <input
+                  type="password"
+                  class="password-input"
+                  autocomplete="off"
+                  name="password"
+                  required=""
+                  id="id_password"
+                /><button
+                  class="input-group-addon"
+                  type="button"
+                  role="button"
+                  id="view-password"
+                  title="Exibir a senha"
+                >
+                  <span class="fa fa-eye fa-fw" aria-hidden="true"></span
+                  ><span class="sr-only">Exibir a senha</span>
+                </button>
+              </div>
+              <script>
+                toggle_password_view('password')
+              </script>
+              <input type="hidden" name="this_is_the_login_form" value="1" /><input
+                type="hidden"
+                name="next"
+                value=""
+              />
+            </div>
+            <!-- <div class="form-row" id="captcha-row" style="display: none">
+              <label for="id_recaptcha" class="required" title="Preenchimento obrigatório"
+                >Captcha:</label
+              >
+              <script src="https://www.google.com/recaptcha/api.js"></script>
+              <script type="text/javascript">
+                // Submit function to be called, after reCAPTCHA was successful.
+                var onSubmit_75bbb464666541fc981486fce825f386 = function (token) {
+                  console.log(
+                    'reCAPTCHA validated for \'data-widget-uuid="75bbb464666541fc981486fce825f386"\''
+                  )
+                }
+              </script>
+              <div
+                class="g-recaptcha"
+                data-sitekey="6Lc_4rUiAAAAAAuN5BJSFZibViZO2mRtpYgcMkHN"
+                id="id_recaptcha"
+                data-widget-uuid="75bbb464666541fc981486fce825f386"
+                data-callback="onSubmit_75bbb464666541fc981486fce825f386"
+                data-size="normal"
+              >
+                <div style="width: 304px; height: 78px">
+                  <div>
+                    <iframe
+                      title="reCAPTCHA"
+                      width="304"
+                      height="78"
+                      role="presentation"
+                      name="a-tz4zsls68nwg"
+                      frameborder="0"
+                      scrolling="no"
+                      sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
+                      src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6Lc_4rUiAAAAAAuN5BJSFZibViZO2mRtpYgcMkHN&amp;co=aHR0cHM6Ly9zdWFwLmlmbWcuZWR1LmJyOjQ0Mw..&amp;hl=pt-BR&amp;v=h7qt2xUGz2zqKEhSc8DD8baZ&amp;size=normal&amp;cb=m9dh1cvtlb65"
+                    ></iframe>
+                  </div>
+                  <textarea
+                    id="g-recaptcha-response"
+                    name="g-recaptcha-response"
+                    class="g-recaptcha-response"
+                    style="
+                      width: 250px;
+                      height: 40px;
+                      border: 1px solid rgb(193, 193, 193);
+                      margin: 10px 25px;
+                      padding: 0px;
+                      resize: none;
+                      display: none;
+                    "
+                  ></textarea>
+                </div>
+                <iframe style="display: none"></iframe>
+              </div>
+            </div> -->
+            <div class="submit-row">
+              <input type="submit" class="btn success" value="Acessar" />
+            </div>
+            <div class="form-row">
+              <a href="/comum/solicitar_trocar_senha/">Esqueceu ou deseja alterar sua senha?</a
+              ><a href="/comum/recuperar_usuario/">Esqueceu seu usuário?</a>
+            </div>
+          </form>
+        </div>
+      </main>
+      <footer class="login-footer flex-container">
+        <div class="flex-item">
+          <span class="fas fa-copyright" aria-hidden="true"></span> 2021 SUAP
+        </div>
+        <div class="flex-item">
+          <span class="fab fa-python" aria-hidden="true"></span> Desenvolvimento por IFRN
+        </div>
+        <div class="flex-item">
+          <span class="fas fa-server" aria-hidden="true"></span> suap-prod
+        </div>
+        <div class="flex-item">
+          <span class="fas fa-id-badge" aria-hidden="true"></span> Licenciado para IFMG
+        </div>
+      </footer>
+    </div>
+    <script type="text/javascript" src="/static/js/fancybox.js" charset="utf-8"></script>
+    <div id="gr66sfzq4m" style="display: block"></div>
+    <div
+      style="
+        background-color: rgb(255, 255, 255);
+        border: 1px solid rgb(204, 204, 204);
+        box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px;
+        position: absolute;
+        transition: visibility linear 0.3s, opacity 0.3s linear;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 2000000000;
+        left: 0px;
+        top: -10000px;
+      "
+    >
+      <div
+        style="
+          width: 100%;
+          height: 100%;
+          position: fixed;
+          top: 0px;
+          left: 0px;
+          z-index: 2000000000;
+          background-color: rgb(255, 255, 255);
+          opacity: 0.05;
+        "
+      ></div>
+      <div
+        class="g-recaptcha-bubble-arrow"
+        style="
+          border: 11px solid transparent;
+          width: 0px;
+          height: 0px;
+          position: absolute;
+          pointer-events: none;
+          margin-top: -11px;
+          z-index: 2000000000;
+        "
+      ></div>
+      <div
+        class="g-recaptcha-bubble-arrow"
+        style="
+          border: 10px solid transparent;
+          width: 0px;
+          height: 0px;
+          position: absolute;
+          pointer-events: none;
+          margin-top: -10px;
+          z-index: 2000000000;
+        "
+      ></div>
+      <div style="z-index: 2000000000; position: relative">
+        <iframe
+          title="o desafio reCAPTCHA expira em dois minutos"
+          name="c-tz4zsls68nwg"
+          frameborder="0"
+          scrolling="no"
+          sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
+          src="https://www.google.com/recaptcha/api2/bframe?hl=pt-BR&amp;v=h7qt2xUGz2zqKEhSc8DD8baZ&amp;k=6Lc_4rUiAAAAAAuN5BJSFZibViZO2mRtpYgcMkHN"
+          style="width: 100%; height: 100%"
+        ></iframe>
+      </div>
+    </div>
+  </body>
+</html>
