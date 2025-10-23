@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# encoding: utf-8
 import json
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
@@ -11,7 +9,6 @@ CORS(app)
 client = MongoClient("mongodb://localhost:27017/")
 db = client["user_database"]
 collection = db["users"]
-
 
 @app.route("/users", methods=["GET"])
 def list_users():
