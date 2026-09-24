@@ -1,111 +1,595 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard de Usuários</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AP2 - Cliente da API</title>
+    <style>
+      :root {
+        --bg: #f3f4f6;
+        --panel: #ffffff;
+        --text: #1f2933;
+        --muted: #6b7280;
+        --line: #d9dde3;
+        --blue: #2457c5;
+        --green: #1b7a3d;
+        --yellow: #9a6700;
+        --red: #b3261e;
+        --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+      }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+      * {
+        box-sizing: border-box;
+      }
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
+      body {
+        margin: 0;
+        padding: 20px;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        font-size: 15px;
+      }
 
-    <link rel="stylesheet" href="style.css" />
+      h1 {
+        font-size: 22px;
+        margin: 0 0 4px;
+      }
+      h2 {
+        font-size: 16px;
+        margin: 0 0 12px;
+      }
+
+      .config {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin: 12px 0 20px;
+      }
+
+      .layout {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: 1fr;
+      }
+
+      @media (min-width: 950px) {
+        .layout {
+          grid-template-columns: 3fr 2fr;
+        }
+        .full {
+          grid-column: 1 / -1;
+        }
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 16px;
+        min-width: 0;
+      }
+
+      label {
+        display: block;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      input,
+      select,
+      textarea {
+        font: inherit;
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--text);
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 90px;
+        font-family: var(--mono);
+        font-size: 14px;
+        resize: vertical;
+      }
+      select {
+        width: 100%;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus,
+      button:focus-visible {
+        outline: 2px solid var(--blue);
+        outline-offset: 1px;
+      }
+
+      .row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .row > div {
+        flex: 1;
+        min-width: 140px;
+      }
+      .field {
+        margin-bottom: 12px;
+      }
+
+      button {
+        font: inherit;
+        padding: 8px 16px;
+        border: 1px solid var(--blue);
+        border-radius: 6px;
+        background: var(--blue);
+        color: #fff;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: #fff;
+        color: var(--blue);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: wait;
+      }
+
+      pre {
+        margin: 0;
+        padding: 10px;
+        background: #f7f8fa;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font-family: var(--mono);
+        font-size: 13px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .curl {
+        margin-top: 12px;
+      }
+      .curl pre {
+        color: var(--muted);
+      }
+
+      .results {
+        display: grid;
+        gap: 12px;
+      }
+      @media (min-width: 700px) {
+        .results.two {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .result-head {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 6px;
+        flex-wrap: wrap;
+      }
+
+      .status {
+        font-family: var(--mono);
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 4px;
+        color: #fff;
+      }
+      .s2 {
+        background: var(--green);
+      }
+      .s4 {
+        background: var(--yellow);
+      }
+      .s5,
+      .none {
+        background: var(--red);
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .user {
+        border-top: 1px solid var(--line);
+        padding: 8px 0;
+      }
+      .user:first-child {
+        border-top: none;
+      }
+      .user ul {
+        margin: 6px 0 0;
+        padding-left: 20px;
+      }
+      .user li {
+        margin: 2px 0;
+      }
+      .id {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--blue);
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .changed {
+        background: #fff3c4;
+      }
+      .removed {
+        color: var(--red);
+        font-size: 13px;
+        margin-top: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--line);
+      }
+      th {
+        color: var(--muted);
+        font-weight: 500;
+      }
+      td.mono {
+        font-family: var(--mono);
+      }
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+    </style>
   </head>
   <body>
-    <header style="text-align: center; margin-bottom: 30px">
-      <h1>Dashboard de Usuários</h1>
-    </header>
+    <h1>AP2 - Cliente da API</h1>
+    <p class="muted">
+      Escolha um endpoint, ajuste os dados e envie. O painel da direita mostra como os dados ficaram
+      depois de cada requisição.
+    </p>
 
-    <main class="container">
-      <div class="card">
-        <h2><i class="fas fa-user-edit"></i> Adicionar / Atualizar</h2>
-        <form id="form-adicionar-atualizar">
-          <div class="form-group">
-            <label for="userName">Nome:</label>
-            <input type="text" id="userName" placeholder="Nome completo" required />
-          </div>
-          <div class="form-group">
-            <label for="userEmail">Email:</label>
-            <input type="email" id="userEmail" placeholder="email@exemplo.com" required />
-          </div>
-          <div class="button-group">
-            <button type="button" id="btnAdicionar" class="btn btn-primary">
-              <i class="fas fa-plus"></i> Adicionar
-            </button>
-            <button type="button" id="btnAtualizar" class="btn btn-primary">
-              <i class="fas fa-save"></i> Atualizar
-            </button>
-          </div>
-        </form>
+    <div class="config">
+      <div>
+        <label for="base">Endereço da API</label>
+        <input id="base" size="28" />
       </div>
-
-      <div class="card">
-        <h2><i class="fas fa-search"></i> Consultar / Remover</h2>
-        <form id="form-consultar-remover">
-          <div class="form-group">
-            <label for="queryName">Nome:</label>
-            <input type="text" id="queryName" placeholder="Digite o nome do usuário" required />
-          </div>
-          <div class="button-group">
-            <button type="button" id="btnConsultar" class="btn btn-primary">
-              <i class="fas fa-search"></i> Consultar
-            </button>
-            <button type="button" id="btnRemover" class="btn btn-danger">
-              <i class="fas fa-trash"></i> Remover
-            </button>
-          </div>
-        </form>
+      <div>
+        <label for="timeout">Timeout (ms)</label>
+        <input id="timeout" type="number" value="5000" min="100" step="500" style="width: 110px" />
       </div>
+    </div>
 
-      <div class="card full-width">
-        <h2><i class="fas fa-users"></i> Todos os Usuários</h2>
-        <button
-          id="btnListarTodos"
-          class="btn btn-primary"
-          style="width: auto; margin-bottom: 20px"
+    <div class="layout">
+      <section class="panel">
+        <h2>Requisição</h2>
+
+        <div class="field">
+          <label for="endpoint">Endpoint</label>
+          <select id="endpoint"></select>
+        </div>
+
+        <div class="field" id="id-field">
+          <label for="id">id</label>
+          <input id="id" type="number" min="1" placeholder="clique num id no painel ao lado" />
+        </div>
+
+        <div class="field" id="body-field">
+          <label for="body">Corpo (JSON)</label>
+          <textarea id="body" spellcheck="false"></textarea>
+        </div>
+
+        <div class="row">
+          <button id="send">Enviar</button>
+          <button id="send-twice" class="secondary">Enviar 2x</button>
+        </div>
+
+        <div class="curl">
+          <label>curl equivalente</label>
+          <pre id="curl"></pre>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <h2>Dados atuais</h2>
+        <div id="data"><p class="muted">Carregando...</p></div>
+      </aside>
+
+      <section class="panel full">
+        <h2>Resposta</h2>
+        <div id="results" class="results"><p class="muted">Nenhuma requisição ainda.</p></div>
+      </section>
+
+      <section class="panel full">
+        <div
+          class="row"
+          style="justify-content: space-between; align-items: center; margin: 0 0 8px"
         >
-          <i class="fas fa-sync-alt"></i> Listar Todos
-        </button>
-        <div class="table-container" style="overflow-x: auto">
-          <table id="user-table">
+          <h2 style="margin: 0">Histórico</h2>
+          <button id="clear" class="secondary">Limpar</button>
+        </div>
+        <div class="table-wrap">
+          <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
+                <th>Hora</th>
+                <th>Método</th>
+                <th>Rota</th>
+                <th>Status</th>
+                <th>Tempo</th>
               </tr>
             </thead>
-            <tbody id="user-list-body"></tbody>
+            <tbody id="history"></tbody>
           </table>
         </div>
-      </div>
+      </section>
+    </div>
 
-      <div class="card full-width">
-        <h2><i class="fas fa-file-alt"></i> Log de Respostas</h2>
-        <pre
-          id="response-log"
-          style="
-            background-color: #212529;
-            color: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-            min-height: 100px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-          "
-        ></pre>
-      </div>
-    </main>
+    <script>
+      const endpoints = [
+        { method: 'GET', path: '/users' },
+        { method: 'POST', path: '/users', body: { name: 'rodrigo', email: 'rodrigo@teste.com' } },
+        { method: 'GET', path: '/users/{id}' },
+        { method: 'PUT', path: '/users/{id}', body: { name: 'rodrigo soares', email: 'rodrigo@teste.com' } },
+        { method: 'DELETE', path: '/users/{id}' },
+        { method: 'GET', path: '/users/{id}/tasks' },
+        { method: 'POST', path: '/users/{id}/tasks', body: { title: 'Estudar REST' } },
+        { method: 'DELETE', path: '/tasks/{id}' },
+        { method: 'GET', path: '/slow' },
+      ]
 
-    <div id="toast-container"></div>
+      const $ = id => document.getElementById(id)
+      const defaultBase = location.protocol.startsWith('http')
+        ? location.origin
+        : 'http://127.0.0.1:5000'
+      $('base').value = defaultBase
+
+      let previous = null
+
+      endpoints.forEach((ep, i) => {
+        const option = document.createElement('option')
+        option.value = i
+        option.textContent = `${ep.method} ${ep.path}`
+        $('endpoint').append(option)
+      })
+
+      function current() {
+        return endpoints[$('endpoint').value]
+      }
+
+      function onEndpointChange() {
+        const ep = current()
+        $('id-field').hidden = !ep.path.includes('{id}')
+        $('body-field').hidden = !ep.body
+        $('body').value = ep.body ? JSON.stringify(ep.body, null, 2) : ''
+        updateCurl()
+      }
+
+      function buildPath() {
+        return current().path.replace('{id}', $('id').value.trim())
+      }
+
+      function updateCurl() {
+        const ep = current()
+        let cmd = `curl -i -X ${ep.method} ${$('base').value}${buildPath()}`
+        if (ep.body) {
+          const body = $('body')
+            .value.replace(/\s*\n\s*/g, ' ')
+            .trim()
+          cmd += ` \\\n  -H "Content-Type: application/json" \\\n  -d '${body}'`
+        }
+        $('curl').textContent = cmd
+      }
+
+      async function sendRequest() {
+        const ep = current()
+        const path = buildPath()
+        const options = {
+          method: ep.method,
+          signal: AbortSignal.timeout(Number($('timeout').value) || 5000),
+        }
+        if (ep.body) {
+          options.headers = { 'Content-Type': 'application/json' }
+          options.body = $('body').value
+        }
+
+        const start = performance.now()
+        const result = { time: new Date(), method: ep.method, path }
+        try {
+          const res = await fetch($('base').value + path, options)
+          result.status = res.status
+          result.body = await res.text()
+        } catch (err) {
+          result.status = null
+          result.error =
+            err.name === 'TimeoutError'
+              ? `o servidor não respondeu em ${$('timeout').value} ms (timeout)`
+              : 'não foi possível conectar ao servidor'
+        }
+        result.ms = Math.round(performance.now() - start)
+        return result
+      }
+
+      function renderResult(r) {
+        const box = document.createElement('div')
+        const head = document.createElement('div')
+        head.className = 'result-head'
+
+        const status = document.createElement('span')
+        if (r.status) {
+          status.className = 'status s' + String(r.status)[0]
+          status.textContent = r.status
+        } else {
+          status.className = 'status none'
+          status.textContent = 'SEM RESPOSTA'
+        }
+
+        const info = document.createElement('span')
+        info.className = 'muted'
+        info.textContent = `${r.method} ${r.path} em ${r.ms} ms`
+        head.append(status, info)
+
+        const pre = document.createElement('pre')
+        if (r.error) {
+          pre.textContent = r.error
+        } else if (!r.body) {
+          pre.textContent = '(resposta sem corpo)'
+        } else {
+          try {
+            pre.textContent = JSON.stringify(JSON.parse(r.body), null, 2)
+          } catch {
+            pre.textContent = r.body
+          }
+        }
+
+        box.append(head, pre)
+        return box
+      }
+
+      function addHistory(r) {
+        const tr = document.createElement('tr')
+        const cells = [
+          r.time.toLocaleTimeString(),
+          r.method,
+          r.path,
+          r.status ?? (r.error.includes('timeout') ? 'TIMEOUT' : 'SEM CONEXÃO'),
+          r.ms + ' ms',
+        ]
+        cells.forEach((value, i) => {
+          const td = document.createElement('td')
+          td.textContent = value
+          if (i > 0) td.className = 'mono'
+          tr.append(td)
+        })
+        $('history').prepend(tr)
+      }
+
+      async function run(times) {
+        if (!$('id-field').hidden && !$('id').value) {
+          $('results').className = 'results'
+          $('results').innerHTML = '<p class="muted">Informe o id antes de enviar.</p>'
+          return
+        }
+
+        $('send').disabled = $('send-twice').disabled = true
+        const results = []
+        for (let i = 0; i < times; i++) {
+          const r = await sendRequest()
+          results.push(r)
+          addHistory(r)
+        }
+        $('results').className = times > 1 ? 'results two' : 'results'
+        $('results').replaceChildren(...results.map(renderResult))
+        $('send').disabled = $('send-twice').disabled = false
+
+        loadData()
+      }
+
+      async function loadData() {
+        let data
+        try {
+          const res = await fetch(defaultBase + '/data', { signal: AbortSignal.timeout(5000) })
+          data = await res.json()
+        } catch {
+          $('data').innerHTML =
+            '<p class="muted">Não foi possível carregar os dados. A API está rodando?</p>'
+          return
+        }
+
+        const snapshot = {}
+        data.users.forEach(u => (snapshot['u' + u.id] = JSON.stringify(u)))
+        data.tasks.forEach(t => (snapshot['t' + t.id] = JSON.stringify(t)))
+        const isChanged = key => previous && previous[key] !== snapshot[key]
+
+        const container = document.createElement('div')
+
+        if (data.users.length === 0) {
+          container.innerHTML = '<p class="muted">Nenhum usuário. Use POST /users para criar.</p>'
+        }
+
+        data.users.forEach(u => {
+          const div = document.createElement('div')
+          div.className = 'user'
+          const line = document.createElement('div')
+          if (isChanged('u' + u.id)) line.className = 'changed'
+          line.append(idButton(u.id), ` ${u.name} <${u.email}>`)
+          div.append(line)
+
+          const tasks = data.tasks.filter(t => t.user_id === u.id)
+          if (tasks.length) {
+            const ul = document.createElement('ul')
+            tasks.forEach(t => {
+              const li = document.createElement('li')
+              if (isChanged('t' + t.id)) li.className = 'changed'
+              li.append(idButton(t.id), ` ${t.title}`)
+              ul.append(li)
+            })
+            div.append(ul)
+          }
+          container.append(div)
+        })
+
+        if (previous) {
+          const removed = Object.keys(previous)
+            .filter(key => !(key in snapshot))
+            .map(key => (key[0] === 'u' ? 'usuário ' : 'tarefa ') + key.slice(1))
+          if (removed.length) {
+            const p = document.createElement('p')
+            p.className = 'removed'
+            p.textContent = 'Removido nesta requisição: ' + removed.join(', ')
+            container.append(p)
+          }
+        }
+
+        previous = snapshot
+        $('data').replaceChildren(container)
+      }
+
+      function idButton(id) {
+        const btn = document.createElement('button')
+        btn.className = 'id'
+        btn.textContent = '#' + id
+        btn.title = 'usar este id na requisição'
+        btn.addEventListener('click', () => {
+          $('id').value = id
+          updateCurl()
+        })
+        return btn
+      }
+
+      $('endpoint').addEventListener('change', onEndpointChange)
+      $('id').addEventListener('input', updateCurl)
+      $('body').addEventListener('input', updateCurl)
+      $('base').addEventListener('input', updateCurl)
+      $('send').addEventListener('click', () => run(1))
+      $('send-twice').addEventListener('click', () => run(2))
+      $('clear').addEventListener('click', () => $('history').replaceChildren())
+
+      onEndpointChange()
+      loadData()
+    </script>
   </body>
-  <script src="script.js"></script>
 </html>

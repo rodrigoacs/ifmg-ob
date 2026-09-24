@@ -1,0 +1,16 @@
+{
+  "next_id": 7,
+  "users": [
+    {
+      "id": 3,
+      "name": "rodrigo",
+      "email": "rodrigo@teste.com"
+    },
+    {
+      "id": 4,
+      "name": "rodrigao",
+      "email": "rodrigoa@teste.com"
+    }
+  ],
+  "tasks": []
+}

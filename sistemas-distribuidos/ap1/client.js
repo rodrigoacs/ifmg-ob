@@ -46,6 +46,7 @@ function sendMessageByIndex() {
 
   const messageToSend = `${format}|${serializedData}`
   console.log(`\nEnviando dados em formato ${format}`)
+  console.log(`Mensagem enviada em ${format}:\n${serializedData}`)
   client.write(messageToSend)
 }
 
